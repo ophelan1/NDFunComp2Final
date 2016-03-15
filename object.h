@@ -8,16 +8,18 @@
 #include <string>
 #include <algorithm>
 
+using namespace std;
+
 class object{
 	public:
-		int getx(void);
-		int gety(void);
-		void changex(int);
+		int getx(void);						//ALL FUNCTIONS WHICH RETURN OBJECT VALUES START W/ 'get'
+		int gety(void);								
+		void changex(int);					//ALL FUNCTIONS WHICH CHANGE OBJECT VALUES START W/ 'change'
 		void changey(int);
 		void changedx(int);
 		void changedy(int);
-		void makeChange(void);
-		object();
+		void makeChange(void);				//ALL FUNCTIONS CONCERNED WITH ANIMATION (UPDATING POSITIONS) START W/ 'make'
+		object();							
 
 	private:
 		int xpos;
@@ -28,44 +30,46 @@ class object{
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 
-	object(){
+	object::object(){
 
   	cout << "Please Enter a Value for the xPos: " << endl;
-  	cin >> xpos;
+  	std::cin >> xpos;
   	cout << "Please Enter a Value for the yPos: " << endl;
   	cin >> ypos;
 	}
 
 //################ BASIC UTILITIES ############################
 
-	int getx(){
+	int object::getx(){
 		return xpos;
 	}
 
-	int gety(){
+	int object::gety(){
 		return ypos;
 	}
 
-	void changex(int xchange){
+	void object::changex(int xchange){
 		xpos=xpos+xchange;
 	}
 
-	void changey(int ychange){
+	void object::changey(int ychange){
 		ypos=ypos+ychange;
 	}
 
-	void changedx(int dxchange){
+	void object::changedx(int dxchange){
 		dxpos=dxpos+dxchange;
 	}
 
-	void changedy(int dychange){
+	void object::changedy(int dychange){
 		dypos=dypos+dychange;
 	}
-	void makeChange(){
+	void object::makeChange(){
 		xpos=xpos+dxpos;
 		ypos=ypos+dypos;
 	}
 
+
+#endif
 
 
 
