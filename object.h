@@ -12,20 +12,20 @@ using namespace std;
 
 class object{
 	public:
-		int getx(void);						//ALL FUNCTIONS WHICH RETURN OBJECT VALUES START W/ 'get'
-		int gety(void);								
-		void changex(int);					//ALL FUNCTIONS WHICH CHANGE OBJECT VALUES START W/ 'change'
-		void changey(int);
-		void changedx(int);
-		void changedy(int);
-		void makeChange(void);				//ALL FUNCTIONS CONCERNED WITH ANIMATION (UPDATING POSITIONS) START W/ 'make'
-		object();							
+		object();			
+		int get_x(void);						//ALL FUNCTIONS WHICH RETURN OBJECT VALUES START W/ 'get'
+		int get_y(void);								
+		void change_x(int);					//ALL FUNCTIONS WHICH CHANGE OBJECT VALUES START W/ 'change'
+		void change_y(int);
+		void change_dx(int);
+		void change_dy(int);
+		void makeChange(void);				//ALL FUNCTIONS CONCERNED WITH ANIMATION (UPDATING POSITIONS) START W/ 'make'				
 
 	private:
-		int xpos;
-		int ypos;
-		int dxpos;
-		int dypos;
+		int xPos;
+		int yPos;
+		int dxVal;
+		int dyVal;
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
@@ -33,39 +33,39 @@ class object{
 	object::object(){
 
   	cout << "Please Enter a Value for the xPos: " << endl;
-  	std::cin >> xpos;
+  	std::cin >> xPos;
   	cout << "Please Enter a Value for the yPos: " << endl;
-  	cin >> ypos;
+  	cin >> yPos;
 	}
 
 //################ BASIC UTILITIES ############################
 
-	int object::getx(){
-		return xpos;
+	int object::get_x(){
+		return xPos;
 	}
 
-	int object::gety(){
-		return ypos;
+	int object::get_y(){
+		return yPos;
 	}
 
-	void object::changex(int xchange){
-		xpos=xpos+xchange;
+	void object::change_x(int xChange){
+		xPos=xPos+xChange;
 	}
 
-	void object::changey(int ychange){
-		ypos=ypos+ychange;
+	void object::change_y(int yChange){
+		yPos=yPos+yChange;
 	}
 
-	void object::changedx(int dxchange){
-		dxpos=dxpos+dxchange;
+	void object::change_dx(int dxChange){
+		dxVal=dxVal+dxChange;
 	}
 
-	void object::changedy(int dychange){
-		dypos=dypos+dychange;
+	void object::change_dy(int dyChange){
+		dyVal=dyVal+dyChange;
 	}
 	void object::makeChange(){
-		xpos=xpos+dxpos;
-		ypos=ypos+dypos;
+		xPos=xPos+dxVal;
+		yPos=yPos+dyVal;
 	}
 
 
