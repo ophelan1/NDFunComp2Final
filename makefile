@@ -7,6 +7,4 @@ object.o: object.h
 	g++ -c object.h -o object.o
 
 clean:
-	rm object.o
-	rm main
-
+	rm -f object.o main
