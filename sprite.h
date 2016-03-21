@@ -1,6 +1,6 @@
 /* sprite.h
  * Author:	John Westhoff
- * Date:	03/14/2016
+ * Date:	03/20/2016
  * Course:	CSE20212
  *
  * Interface file for the Sprite class. 
