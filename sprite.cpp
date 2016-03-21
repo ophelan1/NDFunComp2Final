@@ -1,6 +1,6 @@
 /* sprite.cpp
  * Author:	John Westhoff
- * Date:	03/15/2016
+ * Date:	03/20/2016
  * Course:	CSE20212
  *
  * Implementation file for the Sprite class.
