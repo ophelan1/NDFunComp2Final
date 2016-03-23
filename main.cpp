@@ -2,21 +2,32 @@
 #include <fstream>
 #include <array>
 #include <vector>
+#include <string>
 #include <regex>
-#include "object.h"
+#include <SDL/SDL.h>
+#include "sprite.h"
 
 using namespace std;
 
 int main(void){
-	object thing;
+
+	int xPos, yPos, dx, dy;						//user defined	
+	int width = 5, height = 10, frames = 100;	//programmer defined
+	string filename;
+
+	cout << "Please enter a value for the initial x position: " << endl;
+  	cin >> xPos;
+  	cout << "Please enter a value for the initial y position: " << endl;
+  	cin >> yPos;
+  	cout << "Please enter a value for the desired change in x: " << endl;
+  	cin >> dx;
+  	cout << "PLease enter a value for the desired change in y: " << endl;
+  	cin >> dy;
 
 	while(1){
-		cout << string( 100, '\n' );
-		cout << "X-Position = " << thing.get_x() << endl;
-		cout << "Y-Position = " << thing.get_y() << endl;
-		cout << "Delta X    = " << thing.get_dx() << endl;
-		cout << "Delta Y    = " << thing.get_dy() << endl;
+		sprite object("image.png", xPos, yPos, width, height, frames);
+		xPos += dx;
+		yPos += dy;
 		sleep(1);
-		thing.makeChange();
 	}
 }
