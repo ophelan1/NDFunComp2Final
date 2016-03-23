@@ -1,0 +1,22 @@
+3/15/16 || 12:30-1:15 || Owen, Jose, John
+General meet and greet to welcome John to the group, though Chisom was 
+unable to attend. Generally planned out the project and went over 
+timelines.
+
+3/15/16 || 5:00-6:00pm || Owen, Jose, Chisom
+Normal Lab Time
+
+3/20/16 || 2:00-5:00 || Owen, Jose, Chisom, John
+Group work on SDL tutorials, general strategy and goals for lab on 3/22 
+
+3/22/16 || 5:00-6:00pm || Owen, Jose, Chisom
+Normal Lab Time
+
+3/22/16 || 6:30-7:30pm || Owen, Jose, John
+Chisom sick. Individual SDL work as well as explanations of everyone's
+individual code they contributed to the github since we last went 
+over everything 
+	NOTE: May need to start branching so we can work on the engine / 
+			graphics seperately 
+
+
