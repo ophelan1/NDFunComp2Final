@@ -2,10 +2,10 @@
 #include <SDL2/SDL_image.h>  
 #include <iostream>
 #include <stdlib.h>
-
 using namespace std;
-SDL_Texture *LoadTexture(std::string filepath, SDL_Renderer *renderTarget){
-	SDL_Texture *texture = nullptr;
+
+SDL_Texture* LoadTexture(std::string filepath, SDL_Renderer *renderTarget){
+	SDL_Texture *texture = NULL;
 	SDL_Surface *surface = IMG_Load(filepath.c_str());
 	if (surface == NULL)
 		std::cout << "Error"<< std::endl; 
@@ -25,9 +25,9 @@ int main( int argc, char *argv[] ){
 
 	const int FPS = 60;
 	
-	SDL_Window *window = nullptr;
-	SDL_Texture *currentImage = nullptr; 
-	SDL_Renderer *renderTarget = nullptr; 
+	SDL_Window *window = NULL;
+	SDL_Texture *currentImage = NULL; 
+	SDL_Renderer *renderTarget = NULL; 
 	SDL_Rect playerRect;
 	SDL_Rect playerPosition;
 	int frameWidth, frameHeight;
@@ -103,9 +103,9 @@ int main( int argc, char *argv[] ){
 	SDL_DestroyWindow( window );
 	SDL_DestroyTexture( currentImage );
 	SDL_DestroyRenderer( renderTarget);
-	window = nullptr;
-	currentImage = nullptr;
-	renderTarget = nullptr; 
+	window = NULL;
+	currentImage = NULL;
+	renderTarget = NULL; 
 	SDL_Quit();
 	return 0;
 
