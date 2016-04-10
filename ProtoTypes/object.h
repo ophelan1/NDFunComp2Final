@@ -23,7 +23,7 @@ class object{
 		void change_dy(int);
 		void makeChange(void);				//ALL FUNCTIONS CONCERNED WITH ANIMATION (UPDATING POSITIONS) START W/ 'make'				
 
-	private:
+	protected:
 		int xPos;
 		int yPos;
 		int dxVal;
@@ -33,13 +33,14 @@ class object{
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 
 	object::object(){
-
+/*
   	cout << "Please Enter a Value for the xPos: " << endl;
   	std::cin >> xPos;
   	cout << "Please Enter a Value for the yPos: " << endl;
   	cin >> yPos;
   	dxVal=1;
   	dyVal=0;
+*/
 	}
 //############# BASIC RETURN FUNCTIONS ########################
 	

@@ -4,39 +4,48 @@
 #include "sprite.h"
 #include "object.h"
 #include <SDL/SDL.h>
-
+#include <SDL/SDL_keyboard.h>
+#include <iostream>
 
 using namespace std;
 
 class Tank : public object{
 	public:
-		tank();
-        void drawSprite(SDL_Surface* screen);
-        void onUpdate(unsigned char state*);
+		Tank();
+		void drawSprite(SDL_Surface* screen);
+		void onUpdate(const unsigned char* state);
 	private:
-        int dxMax = 4;
-        int xMax = 600;
-        int xMin = 0;
-        Sprite sprite;
+		int dxMax;
+		int xMax;
+		int xMin;
+		Sprite sprite;
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 
     Tank::Tank() : sprite() {
+	xPos = 300;
+	yPos = 300;
         dxVal = 0;
         dyVal = 0;
+	dxMax = 8;
+	xMax = 600;
+	xMin = 0;
     }
 
 //################ BASIC UTILITIES ############################
 
     
-    void Tank::onUpdate(unsigned char state*){
-        if (state[ SDL_SCANCODE_LEFT ] && dxVal > -dxMax && xPos > xMin)
+    void Tank::onUpdate(const unsigned char* state){
+        if (state[ SDLK_LEFT ] && (dxVal > -dxMax) && (xPos > xMin))
             dxVal--;
-        else if (state[ SDL_SCANCODE_RIGHT ] && dxVal < dxMax && xPos < xMax)
+        else if (state[ SDLK_RIGHT ] && (dxVal < dxMax) && (xPos < xMax))
             dxVal++;
-        else
-            dxVal = 0;
+	else if (dxVal != 0)
+		dxVal += dxVal > 0? -1:1;
+
+
+	xPos += dxVal;	
 
         if (xPos < xMin){
             dxVal = 0;
@@ -49,7 +58,7 @@ class Tank : public object{
     }
 
     void Tank::drawSprite(SDL_Surface* screen){
-        sprite.draw(screen,x,y);
+        sprite.draw(screen,xPos,yPos);
     }
 
 #endif
