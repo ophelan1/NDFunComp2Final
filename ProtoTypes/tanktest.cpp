@@ -40,6 +40,7 @@ int main( int argc, char** args )
 	unsigned char keyStates[400] = {0};
 	 while ( !quit )
 	{
+		start = SDL_GetTicks();
 		while ( SDL_PollEvent ( &e ) != 0 )
 		{
 			switch ( e.type )
@@ -52,12 +53,13 @@ int main( int argc, char** args )
 				break;
 				case SDL_KEYDOWN:
 					keyStates[e.key.keysym.sym] = 1;
-cout << "PRESSED " << e.key.keysym.sym << " " << SDLK_LEFT << endl;
+					#ifdef VERBOSE
+						cout << "PRESSED " << e.key.keysym.sym << " " << SDLK_LEFT << endl;
+					#endif
 				break;
 			}
 		}
 		p1.onUpdate ( keyStates );
-		start = SDL_GetTicks();
 		apply_surface( 0, 0, background, screen );
 		p1.drawSprite( screen );
 		if ( SDL_Flip( screen ) == -1 )
