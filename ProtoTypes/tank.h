@@ -11,44 +11,48 @@ using namespace std;
 
 class Tank : public object{
 	public:
-		Tank();
+		Tank(int left, int right, int minX, int maxX);
 		void drawSprite(SDL_Surface* screen);
 		void onUpdate(const unsigned char* state);
 	private:
 		int dxMax;
 		int xMax;
 		int xMin;
-		static const int scale = 100;
-		static const int sprite_width = 32*scale;
-		static const int accel_x = 0.25*scale;
-		static const int friction_x = 0.1*scale;
-		Sprite sprite;
+        int key_left;
+        int key_right;
+		static const int SCALE = 100;
+		static const int ACCEL_X = 0.25*SCALE;
+		static const int FRICTION_X = 0.1*SCALE;
+        Sprite sprite;
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 
-    Tank::Tank() : sprite() {
-	xPos = 300*scale;
-	yPos = 300*scale;
+    Tank::Tank(int left, int right, int minX, int maxX) : sprite() {
+        xPos = 300*SCALE;
+        yPos = 600*SCALE;
         dxVal = 0;
         dyVal = 0;
-	dxMax = 4*scale;
-	xMax = 640*scale;
-	xMin = 0;
+        dxMax = 4*SCALE;
+        xMax = maxX*SCALE;
+        xMin = minX*SCALE;
+        key_left = left;
+        key_right = right;
     }
 
 //################ BASIC UTILITIES ############################
 
     
     void Tank::onUpdate(const unsigned char* state){
-        if (state[ SDLK_LEFT ] && (dxVal > -dxMax) && (xPos > xMin))
-            dxVal -= accel_x;
-        else if (state[ SDLK_RIGHT ] && (dxVal < dxMax) && (xPos + sprite_width < xMax))
-            dxVal += accel_x;
+        const int sprite_width = sprite.getWidth()*SCALE;
+        if (state[ key_left ] && (dxVal > -dxMax) && (xPos > xMin))
+            dxVal -= ACCEL_X;
+        else if (state[ key_right ] && (dxVal < dxMax) && (xPos + sprite_width < xMax))
+            dxVal += ACCEL_X;
 	else if (dxVal != 0)
-		dxVal += dxVal > 0? -friction_x:friction_x;
+		dxVal += dxVal > 0? -FRICTION_X:FRICTION_X;
 
-	if ((dxVal>0?dxVal:-dxVal) < friction_x)
+	if ((dxVal>0?dxVal:-dxVal) < FRICTION_X)
 		dxVal = 0;
 
 	xPos += dxVal;	
@@ -64,7 +68,7 @@ class Tank : public object{
     }
 
     void Tank::drawSprite(SDL_Surface* screen){
-        sprite.draw(screen,xPos/scale,yPos/scale);
+        sprite.draw(screen,xPos/SCALE,yPos/SCALE);
     }
 
 #endif

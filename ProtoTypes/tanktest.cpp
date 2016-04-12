@@ -34,11 +34,12 @@ int main( int argc, char** args )
 
 	background = load_image( "back.bmp" );
 
-	Tank p1;	
+	Tank p1( SDLK_LEFT, SDLK_RIGHT, 0, 320 );	
+	Tank p2( SDLK_a, SDLK_d, 320, 640 );	
 
 	bool quit = false;
 	unsigned char keyStates[400] = {0};
-	 while ( !quit )
+	while ( !quit )
 	{
 		start = SDL_GetTicks();
 		while ( SDL_PollEvent ( &e ) != 0 )
@@ -59,9 +60,11 @@ int main( int argc, char** args )
 				break;
 			}
 		}
-		p1.onUpdate ( keyStates );
 		apply_surface( 0, 0, background, screen );
+		p1.onUpdate ( keyStates );
 		p1.drawSprite( screen );
+		p2.onUpdate ( keyStates );
+		p2.drawSprite( screen );
 		if ( SDL_Flip( screen ) == -1 )
 			return 1;
 		frame++;

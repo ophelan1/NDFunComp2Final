@@ -23,5 +23,7 @@ class Sprite
 		Sprite(std::string sprite_file = "player.png", int sp_x=0, int sp_y=0, int sp_w=32, int sp_h=32, int im_num = 7);
         void animate();
 		void draw(SDL_Surface* screen, int x = 0, int y = 0);
+        int getWidth();
+        int getHeight();
 };
 #endif

@@ -44,3 +44,11 @@ void Sprite::animate()
     sprite_index = (sprite_index + 1) % image_number;
     off.x = off.w*sprite_index;
 }
+int Sprite::getWidth()
+{
+    return off.w;
+}
+int Sprite::getHeight()
+{
+    return off.h;
+}
