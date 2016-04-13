@@ -16,14 +16,17 @@ class Sprite
 		// Sprite values
 		SDL_Surface* sprite;
 		SDL_Rect off;
-        int sprite_index;
-        int image_number;
+       		int sprite_index;
+	        int image_number;
 	public:
 		~Sprite();
 		Sprite(std::string sprite_file = "player.png", int sp_x=0, int sp_y=0, int sp_w=32, int sp_h=32, int im_num = 7);
-        void animate();
+		void animate();
+		int getFrame();
+		void incFrame(int inc);
+		void setFrame(int frame);
 		void draw(SDL_Surface* screen, int x = 0, int y = 0);
-        int getWidth();
-        int getHeight();
+		int getWidth();
+		int getHeight();
 };
 #endif

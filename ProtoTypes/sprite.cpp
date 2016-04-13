@@ -27,6 +27,7 @@ Sprite::Sprite(std::string sprite_file, int sp_x, int sp_y, int sp_w, int sp_h, 
 	off.h = sp_h;
 	off.w = sp_w;
     image_number = im_num;
+	sprite_index = 0;
 }
 // draws the player on the screen surface
 void Sprite::draw(SDL_Surface* screen, int x, int y)
@@ -41,8 +42,23 @@ Sprite::~Sprite()
 // handles changing the sprite for animation 
 void Sprite::animate()
 {
-    sprite_index = (sprite_index + 1) % image_number;
-    off.x = off.w*sprite_index;
+	while (sprite_index < 0)
+		sprite_index += image_number;
+	off.x = off.w*sprite_index;
+}
+int Sprite::getFrame()
+{
+	return sprite_index;
+}
+void Sprite::incFrame(int inc)
+{
+    sprite_index = (sprite_index + inc) % image_number;
+	animate();
+}
+void Sprite::setFrame(int frame)
+{
+    sprite_index = (frame) % image_number;
+	animate();
 }
 int Sprite::getWidth()
 {

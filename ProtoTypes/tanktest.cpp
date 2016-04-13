@@ -34,8 +34,8 @@ int main( int argc, char** args )
 
 	background = load_image( "back.bmp" );
 
-	Tank p1( SDLK_LEFT, SDLK_RIGHT, 0, 320 );	
-	Tank p2( SDLK_a, SDLK_d, 320, 640 );	
+	Tank p1( SDLK_LEFT, SDLK_RIGHT, 0, 320, SDLK_UP, SDLK_DOWN );	
+	Tank p2( SDLK_a, SDLK_d, 320, 640, SDLK_s, SDLK_w );	
 
 	bool quit = false;
 	unsigned char keyStates[400] = {0};
