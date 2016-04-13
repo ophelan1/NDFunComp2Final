@@ -3,10 +3,10 @@
 #include "tank.h"
 #include <string>
 #include <iostream>
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 640;
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 720;
 const int SCREEN_BPP = 32;
-const int SCREEN_FPS = 60;
+const int SCREEN_FPS = 120;
 const std::string SCREEN_CAPTION = "Testing the Tank";
 
 using namespace std;
@@ -25,7 +25,7 @@ int main( int argc, char** args )
 	if ( SDL_Init( SDL_INIT_EVERYTHING ) == -1 )
 		return 1;
 
-	screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
+	screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE | SDL_FULLSCREEN );
 
 	if ( screen == NULL )
 		return 1;
@@ -34,8 +34,8 @@ int main( int argc, char** args )
 
 	background = load_image( "back.bmp" );
 
-	Tank p1( SDLK_LEFT, SDLK_RIGHT, 0, 320, SDLK_UP, SDLK_DOWN );	
-	Tank p2( SDLK_a, SDLK_d, 320, 640, SDLK_s, SDLK_w );	
+	Tank p1( SDLK_LEFT, SDLK_RIGHT, 0, SCREEN_WIDTH/2, SDLK_UP, SDLK_DOWN );	
+	Tank p2( SDLK_a, SDLK_d, SCREEN_WIDTH/2, SCREEN_WIDTH, SDLK_s, SDLK_w );	
 
 	bool quit = false;
 	unsigned char keyStates[400] = {0};
@@ -60,6 +60,8 @@ int main( int argc, char** args )
 				break;
 			}
 		}
+		if (keyStates[ SDLK_q ])
+			quit = true;
 		apply_surface( 0, 0, background, screen );
 		p1.onUpdate ( keyStates );
 		p1.drawSprite( screen );
