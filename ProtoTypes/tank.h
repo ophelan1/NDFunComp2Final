@@ -104,7 +104,6 @@ class Tank : public object{
         int dy = -SHOT_POWER*SCALE*sin(angle * M_PI / 180.0);
         while (y<screen->h*SCALE && x>=0 && x<screen->w*SCALE)
         {
-            std::cout << "Y VAL: " << y/SCALE << std::endl;
             *(((Uint32*)(screen->pixels)) + (((y/SCALE)*screen->w)) + (x/SCALE)) = 0;
             x += dx/2;
             y += dy/2;
