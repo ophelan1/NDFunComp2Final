@@ -1,13 +1,12 @@
+FLAGS=-lSDL -lSDL_image -std=c++11
+
 all: tanktest
 
-tanktest: tanktest.cpp tank.h object.h sprite.o oursdllib.o
-	g++ $^ -o tanktest -lSDL -lSDL_image
+tanktest: tanktest.cpp tank.h object.h sprite.o oursdllib.o bullet.h
+	g++ $^ -o tanktest $(FLAGS)
 
 %.o: %.cpp %.h
-	g++ -c $< -lSDL -lSDL_image -o $@
-
-main: main.cpp sprite.h
-	g++ main.cpp -o main
+	g++ -c $< $(FLAGS) -o $@
 
 clean:
-	rm -f *.o main tanktest
+	rm -f *.o tanktest

@@ -12,6 +12,7 @@ using namespace std;
 
 class object{
 	public:
+		static const int SCALE = 100;
 		object();			
 		int get_x(void);						//ALL FUNCTIONS WHICH RETURN OBJECT VALUES START W/ 'get'
 		int get_y(void);
@@ -45,11 +46,11 @@ class object{
 //############# BASIC RETURN FUNCTIONS ########################
 	
 	int object::get_x(){
-		return xPos;
+		return xPos/SCALE;
 	}
 
 	int object::get_y(){
-		return yPos;
+		return yPos/SCALE;
 	}
 
 	int object::get_dx(){

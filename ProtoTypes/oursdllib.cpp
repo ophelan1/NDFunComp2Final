@@ -19,9 +19,9 @@ SDL_Surface *load_image(std::string fname)
 	{
 		// Optimize
 		imageOp = SDL_DisplayFormatAlpha( imageIn );
-		// Free old image
-		SDL_FreeSurface( imageIn );
 	}
+	// Free old image
+	SDL_FreeSurface( imageIn );
 	return imageOp;
 }
 void apply_surface( int x, int y, SDL_Surface* src, SDL_Surface* dst, SDL_Rect *clip)

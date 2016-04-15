@@ -7,32 +7,38 @@
 #include <SDL/SDL_keyboard.h>
 #include <iostream>
 #include <string>
+#include <list>
+#include <set>
+#include "bullet.h"
+#include <math.h>
 
 using namespace std;
 
 class Tank : public object{
 	public:
-		Tank(int left, int right, int minX, int maxX, int up, int down);
+	    Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<Bullet*>*bullets);
 		void drawSprite(SDL_Surface* screen);
-		void onUpdate(const unsigned char* state);
+		void onUpdate(const unsigned char* state, set<int>* taps);
 	private:
 		int dxMax;
 		int xMax;
 		int xMin;
-        	int key_left;
-	        int key_right;
+        int key_left;
+	    int key_right;
 		int key_up;
 		int key_down;
-		static const int SCALE = 100;
+        int key_fire;
+		static const int SHOT_POWER = 14;
 		static const int ACCEL_X = 0.25*SCALE;
 		static const int FRICTION_X = 0.1*SCALE;
-	        Sprite sprite;
+	    Sprite sprite;
 		Sprite turret;
+        list<Bullet*>*bulList;
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 
-    Tank::Tank(int left, int right, int minX, int maxX, int up, int down) : sprite(), turret("line360.png",0,0,32,32,360) {
+    Tank::Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<Bullet*>* bullets) : sprite(), turret("line360.png",0,0,32,32,360) {
         xPos = 300*SCALE;
         yPos = 600*SCALE;
         dxVal = 0;
@@ -42,27 +48,30 @@ class Tank : public object{
         xMin = minX*SCALE;
         key_left = left;
         key_right = right;
-	key_up = up;
-	key_down = down;
-	turret.setFrame(90);
+        key_up = up;
+        key_down = down;
+        key_fire = fire;
+        turret.setFrame(90);
+        bulList = bullets;
     }
 
 //################ BASIC UTILITIES ############################
 
     
-    void Tank::onUpdate(const unsigned char* state){
+    void Tank::onUpdate(const unsigned char* state, set<int>* taps){
+        const int sprite_height = sprite.getHeight()*SCALE;
         const int sprite_width = sprite.getWidth()*SCALE;
         if (state[ key_left ] && (dxVal > -dxMax) && (xPos > xMin))
             dxVal -= ACCEL_X;
         else if (state[ key_right ] && (dxVal < dxMax) && (xPos + sprite_width < xMax))
             dxVal += ACCEL_X;
-	else if (dxVal != 0)
+    	else if (dxVal != 0)
 		dxVal += dxVal > 0? -FRICTION_X:FRICTION_X;
 
-	if ((dxVal>0?dxVal:-dxVal) < FRICTION_X)
-		dxVal = 0;
+    	if ((dxVal>0?dxVal:-dxVal) < FRICTION_X)
+	    	dxVal = 0;
 
-	xPos += dxVal;	
+	    xPos += dxVal;	
 
         if (xPos < xMin){
             dxVal = 0;
@@ -73,16 +82,33 @@ class Tank : public object{
             xPos = xMax- sprite_width;
         }
 
-	if (state[ key_up ])
-		turret.incFrame(1);
+        if (state[ key_up ])
+            turret.incFrame(1);
 
-	if (state[ key_down ])
-		turret.incFrame(-1);
+        if (state[ key_down ])
+            turret.incFrame(-1);
+    
+        if (taps->find(key_fire)!=taps->end())
+            bulList->push_back(new Bullet((xPos+sprite_width/2)/SCALE,(yPos+sprite_height/2)/SCALE,turret.getFrame(),SHOT_POWER));
     }
 
     void Tank::drawSprite(SDL_Surface* screen){
+        const int sprite_width = sprite.getWidth()*SCALE;
+        const int sprite_height = sprite.getHeight()*SCALE;
         sprite.draw(screen,xPos/SCALE,yPos/SCALE);
-	turret.draw(screen,xPos/SCALE,yPos/SCALE);
+    	turret.draw(screen,xPos/SCALE,yPos/SCALE);
+        int angle = turret.getFrame();
+        int x = xPos+sprite_width/2;
+        int y = yPos+sprite_height/2;
+        int dx = SHOT_POWER*SCALE*cos(angle * M_PI / 180.0);
+        int dy = -SHOT_POWER*SCALE*sin(angle * M_PI / 180.0);
+        while (y<screen->h*SCALE && x>=0 && x<screen->w*SCALE)
+        {
+            std::cout << "Y VAL: " << y/SCALE << std::endl;
+            *(((Uint32*)(screen->pixels)) + (((y/SCALE)*screen->w)) + (x/SCALE)) = 0;
+            x += dx/2;
+            y += dy/2;
+            dy += Bullet::ACCEL_Y/2;
+        }
     }
-
 #endif
