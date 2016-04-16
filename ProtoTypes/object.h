@@ -5,8 +5,10 @@
 #include <cstdlib>
 #include <fstream>
 #include <vector>
+#include <list>
 #include <string>
 #include <algorithm>
+#include <SDL/SDL.h>
 
 using namespace std;
 
@@ -23,7 +25,10 @@ class object{
 		void change_dx(int);
 		void change_dy(int);
 		void makeChange(void);				//ALL FUNCTIONS CONCERNED WITH ANIMATION (UPDATING POSITIONS) START W/ 'make'				
-
+        virtual void onUpdate() = 0;
+        virtual bool is_dead() = 0;
+        virtual void drawSprite(SDL_Surface* screen) = 0;
+        virtual void onDeath(list<object*>*){ }
 	protected:
 		int xPos;
 		int yPos;

@@ -17,9 +17,11 @@ using namespace std;
 
 class Tank : public object{
 	public:
-	    Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<Bullet*>*bullets);
+	    Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<object*>*bullets);
 		void drawSprite(SDL_Surface* screen);
 		void onUpdate(const unsigned char* state, set<int>* taps);
+        void onUpdate();
+        bool is_dead();
 	private:
 		int dxMax;
 		int xMax;
@@ -29,17 +31,17 @@ class Tank : public object{
 		int key_up;
 		int key_down;
         int key_fire;
-		static const int SHOT_POWER = 9;
+		static const int SHOT_POWER = 11;
 		static const int ACCEL_X = 0.25*SCALE;
 		static const int FRICTION_X = 0.1*SCALE;
 		Sprite turret;
 	    Sprite sprite;
-        list<Bullet*>*bulList;
+        list<object*>*bulList;
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 
-    Tank::Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<Bullet*>* bullets) : sprite(), turret("line360.png",0,0,32,32,360) {
+    Tank::Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<object*>* bullets) : sprite(), turret("line360.png",0,0,32,32,360) {
         xPos = 300*SCALE;
         yPos = 600*SCALE;
         dxVal = 0;
@@ -90,17 +92,22 @@ class Tank : public object{
             turret.incFrame(-1);
     
         if (taps->find(key_fire)!=taps->end())
-            bulList->push_back(new Bullet((xPos+sprite_width/2)/SCALE,(yPos+sprite_height/2)/SCALE,turret.getFrame(),SHOT_POWER));
+            bulList->push_back(new Bullet(xPos/SCALE,yPos/SCALE,turret.getFrame(),SHOT_POWER));
+    }
+
+    void Tank::onUpdate() { }
+
+    bool Tank::is_dead()
+    {
+        return false;
     }
 
     void Tank::drawSprite(SDL_Surface* screen){
         const int sprite_width = sprite.getWidth()*SCALE;
         const int sprite_height = sprite.getHeight()*SCALE;
-        sprite.draw (screen, xPos/SCALE, yPos/SCALE );
-    	turret.draw( screen, xPos/SCALE, yPos/SCALE );
         int angle = turret.getFrame();
-        int x = xPos+sprite_width/2;
-        int y = yPos+sprite_height/2;
+        int x = xPos;
+        int y = yPos;
         int xprev = x;
         int yprev = y;
         int dx =  SHOT_POWER * SCALE * cos( angle * M_PI / 180.0 );
@@ -114,5 +121,7 @@ class Tank : public object{
             y += dy;
             dy += Bullet::ACCEL_Y;
         }
+        sprite.draw (screen, xPos/SCALE-sprite.getWidth()/2, yPos/SCALE-sprite.getHeight()/2);
+    	turret.draw( screen, xPos/SCALE-sprite.getWidth()/2, yPos/SCALE-sprite.getHeight()/2);
     }
 #endif

@@ -5,6 +5,8 @@
 #include "sprite.h"
 #include "object.h"
 #include <iostream>
+#include <list>
+#include "boom.h"
 
 class Bullet : public object{
     public:
@@ -12,20 +14,33 @@ class Bullet : public object{
         Bullet(int x, int y, int angle, int power); 
         void drawSprite(SDL_Surface* screen);
         void onUpdate();
+        bool is_dead();
+        virtual void onDeath(list<object*>*);
     private:
+        int yStart;
 	    Sprite sprite;
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 Bullet::Bullet(int x, int y, int angle, int power) : sprite("bullet.png")
 {
-    xPos = (x-sprite.getWidth()/2)*SCALE;
-    yPos = (y-sprite.getHeight()/2)*SCALE;
+    xPos = x*SCALE;
+    yPos = y*SCALE;
+    yStart = yPos;
     dxVal = power*SCALE*cos(angle * M_PI / 180.0);
     dyVal = -power*SCALE*sin(angle * M_PI / 180.0);
 }
 //################ BASIC UTILITIES ############################
 
+void Bullet::onDeath(list<object*>* li)
+{
+    li->push_back(new Boom(xPos/SCALE+sprite.getWidth()/2, yPos/SCALE+sprite.getHeight()/2));
+}
+
+bool Bullet::is_dead()
+{
+    return yPos > yStart;
+}
 
 void Bullet::onUpdate(){
     dyVal += ACCEL_Y;
@@ -34,7 +49,7 @@ void Bullet::onUpdate(){
 }
 
 void Bullet::drawSprite(SDL_Surface* screen){
-    sprite.draw(screen,xPos/SCALE,yPos/SCALE);
+    sprite.draw(screen,xPos/SCALE - sprite.getWidth()/2, yPos/SCALE - sprite.getHeight()/2);
 }
 
 #endif

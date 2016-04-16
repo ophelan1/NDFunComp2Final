@@ -37,10 +37,10 @@ int main( int argc, char** args )
 
     background = load_image( "back.bmp" );
 
-    list<Bullet*> bulList;
+    list<object*> objList;
 
-    Tank p1( SDLK_LEFT, SDLK_RIGHT, 0, SCREEN_WIDTH/2, SDLK_UP, SDLK_DOWN, SDLK_RCTRL, &bulList );   
-    Tank p2( SDLK_a, SDLK_d, SCREEN_WIDTH/2, SCREEN_WIDTH, SDLK_s, SDLK_w, SDLK_LCTRL, &bulList );   
+    Tank p1( SDLK_LEFT, SDLK_RIGHT, 0, SCREEN_WIDTH/2, SDLK_UP, SDLK_DOWN, SDLK_RCTRL, &objList );   
+    Tank p2( SDLK_a, SDLK_d, SCREEN_WIDTH/2, SCREEN_WIDTH, SDLK_s, SDLK_w, SDLK_LCTRL, &objList );   
     
 
     bool quit = false;
@@ -76,14 +76,15 @@ int main( int argc, char** args )
         p1.drawSprite( screen );
         p2.onUpdate ( keyStates, &keyTaps );
         p2.drawSprite( screen );
-        for (auto i = bulList.begin(); i != bulList.end(); i++)
+        for (auto i = objList.begin(); i != objList.end(); i++)
         {
             (**i).onUpdate();
             (**i).drawSprite( screen );
-            if ((**i).get_y() > SCREEN_HEIGHT - 32)
+            if ( (**i).is_dead() )
             {
+                (**i).onDeath(&objList);
                 delete *i;
-                i = bulList.erase(i);
+                i = objList.erase(i);
             }
         }
         if ( SDL_Flip( screen ) == -1 )
@@ -93,7 +94,7 @@ int main( int argc, char** args )
             SDL_Delay( ( 1000 / SCREEN_FPS ) - ( SDL_GetTicks() - start ) ); 
     }
     SDL_FreeSurface( background );
-    for (auto i = bulList.begin(); i != bulList.end(); i++)
+    for (auto i = objList.begin(); i != objList.end(); i++)
     {
         delete (*i);
     }
