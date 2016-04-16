@@ -3,13 +3,14 @@
 
 #include "sprite.h"
 #include "object.h"
+#include "bullet.h"
+#include "oursdllib.h"
 #include <SDL/SDL.h>
 #include <SDL/SDL_keyboard.h>
 #include <iostream>
 #include <string>
 #include <list>
 #include <set>
-#include "bullet.h"
 #include <math.h>
 
 using namespace std;
@@ -28,11 +29,11 @@ class Tank : public object{
 		int key_up;
 		int key_down;
         int key_fire;
-		static const int SHOT_POWER = 14;
+		static const int SHOT_POWER = 9;
 		static const int ACCEL_X = 0.25*SCALE;
 		static const int FRICTION_X = 0.1*SCALE;
-	    Sprite sprite;
 		Sprite turret;
+	    Sprite sprite;
         list<Bullet*>*bulList;
 };
 
@@ -95,19 +96,23 @@ class Tank : public object{
     void Tank::drawSprite(SDL_Surface* screen){
         const int sprite_width = sprite.getWidth()*SCALE;
         const int sprite_height = sprite.getHeight()*SCALE;
-        sprite.draw(screen,xPos/SCALE,yPos/SCALE);
-    	turret.draw(screen,xPos/SCALE,yPos/SCALE);
+        sprite.draw (screen, xPos/SCALE, yPos/SCALE );
+    	turret.draw( screen, xPos/SCALE, yPos/SCALE );
         int angle = turret.getFrame();
         int x = xPos+sprite_width/2;
         int y = yPos+sprite_height/2;
-        int dx = SHOT_POWER*SCALE*cos(angle * M_PI / 180.0);
-        int dy = -SHOT_POWER*SCALE*sin(angle * M_PI / 180.0);
-        while (y<screen->h*SCALE && x>=0 && x<screen->w*SCALE)
+        int xprev = x;
+        int yprev = y;
+        int dx =  SHOT_POWER * SCALE * cos( angle * M_PI / 180.0 );
+        int dy = -SHOT_POWER * SCALE * sin( angle * M_PI / 180.0 );
+        while ( y<yPos+sprite_height && x>=0 && x<screen->w*SCALE )
         {
-            *(((Uint32*)(screen->pixels)) + (((y/SCALE)*screen->w)) + (x/SCALE)) = 0;
-            x += dx/2;
-            y += dy/2;
-            dy += Bullet::ACCEL_Y/2;
+            draw_line( xprev/SCALE, yprev/SCALE, x/SCALE, y/SCALE, color::PURPLE, screen );
+            xprev = x;
+            yprev = y;
+            x += dx;
+            y += dy;
+            dy += Bullet::ACCEL_Y;
         }
     }
 #endif
