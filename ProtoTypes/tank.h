@@ -37,6 +37,7 @@ class Tank : public object{
 		static const int SHOT_POWER = 11;
 		static const int ACCEL_X = 0.25*SCALE;
 		static const int FRICTION_X = 0.1*SCALE;
+        static const int DAMAGE_PER_BULLET = 10;
 		Sprite turret;
 	    Sprite sprite;
         list<object*>*bulList;
@@ -46,8 +47,13 @@ class Tank : public object{
 
     Tank::Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<object*>* bullets) : sprite(), turret("line360.png",0,0,32,32,360) {
         type = 2;
+<<<<<<< HEAD
         xPos = 300*SCALE;
         yPos = 675*SCALE;
+=======
+        xPos = ((maxX-minX)/2+minX)*SCALE;
+        yPos = 600*SCALE;
+>>>>>>> 2d48882c2e1017243eb64b33c9db98623d15211b
         dxVal = 0;
         dyVal = 0;
         hp = 100;
@@ -126,7 +132,7 @@ class Tank : public object{
         int dy = -SHOT_POWER * SCALE * sin( angle * M_PI / 180.0 );
         while ( y<yPos+sprite_height && x>=0 && x<screen->w*SCALE )
         {
-            draw_line( xprev/SCALE, yprev/SCALE, x/SCALE, y/SCALE, color::PURPLE, screen );
+            draw_line( xprev/SCALE, yprev/SCALE, x/SCALE, y/SCALE, color::RED, screen );
             xprev = x;
             yprev = y;
             x += dx;
@@ -145,7 +151,7 @@ void Tank::checkCollision(object& a)
         const int oy = a.get_y() * SCALE;
         if ( ox >= xPos -sprite_width/2 && oy >= yPos -sprite_height/2 && ox <= xPos + sprite_width/2 && oy <= yPos + sprite_height/2 && a.getType() == 3 )
         {
-            hp -= 1;
+            hp -= DAMAGE_PER_BULLET;
             a.kill();
         }
 }

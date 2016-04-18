@@ -10,6 +10,7 @@
 #include <string>
 #ifndef OURSDL_H
 #define OURSDL_H
+// A namespace for ANSI color constants
 namespace color
 {
                                     //AARRGGBB
@@ -24,8 +25,12 @@ namespace color
 }
 // Loads and optimizes an image from a file
 SDL_Surface *load_image(std::string fname);
+// Draws a src at (x,y) onto dst, using clip for formatting
 void apply_surface( int x, int y, SDL_Surface* src, SDL_Surface* dst, SDL_Rect *clip = NULL );
+// Sets the pixel at (x,y) to color on screen
 void draw_point( int x, int y, Uint32 color, SDL_Surface* screen );
+// Draws a line from (x1,y1) to (x2,y2) on screen with color color
 void draw_line( int x1, int y1, int x2, int y2, Uint32 color, SDL_Surface* screen );
+// Draws a filled rectangle from (x1,y1) to (x2,y2) on screen with color color
 void fill_rect( int x1, int y1, int x2, int y2, Uint32 color, SDL_Surface* screen );
 #endif
