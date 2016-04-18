@@ -47,16 +47,11 @@ class Tank : public object{
 
     Tank::Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<object*>* bullets) : sprite(), turret("line360.png",0,0,32,32,360) {
         type = 2;
-<<<<<<< HEAD
-        xPos = 300*SCALE;
-        yPos = 675*SCALE;
-=======
->>>>>>> fc4afda6800c8837ab65fb8178118a8faf58b64b
         xPos = ((maxX-minX)/2+minX)*SCALE;
         yPos = 675*SCALE;
         dxVal = 0;
         dyVal = 0;
-        hp = 100;
+        hp = MAX_HP;
         dxMax = 4*SCALE;
         xMax = maxX*SCALE;
         xMin = minX*SCALE;
@@ -119,8 +114,10 @@ class Tank : public object{
  
     void Tank::drawSprite(SDL_Surface* screen)
     {
-        fill_rect( (xMin+(xMax-xMin)/4)/SCALE,   16, (xMin+(xMax-xMin)*3/4)/SCALE,             24, color::BLACK, screen );
-        fill_rect( (xMin+(xMax-xMin)/4)/SCALE+1, 17, (xMin+(xMax-xMin)*3*hp/MAX_HP/4)/SCALE-1, 23, color::GREEN, screen );
+        fill_rect( (xMin+(xMax-xMin)/4)/SCALE,   16, (xMin+(xMax-xMin)*3/4)/SCALE,                 24, color::BLACK, screen );
+        double fill = ((double)(xMax-xMin)*0.75*(double)hp/(double)MAX_HP);
+            std::cout << fill << std::endl;
+        fill_rect( (xMin+(xMax-xMin)/4)/SCALE, 17, (xMin+fill)/SCALE, 23, color::GREEN, screen );
         const int sprite_width = sprite.getWidth()*SCALE;
         const int sprite_height = sprite.getHeight()*SCALE;
         int angle = turret.getFrame();

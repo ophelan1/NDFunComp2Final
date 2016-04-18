@@ -88,6 +88,7 @@ int main( int argc, char** args )
         }
         // Show the background
         apply_surface( bgX, bgY, background, screen);
+        apply_surface( bgX + screen->w, bgY, background, screen);
         apply_surface( bgX + background->w, bgY, background, screen);
         // Show the dot
         p1->onUpdate ( keyStates, &keyTaps );

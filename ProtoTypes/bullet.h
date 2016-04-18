@@ -20,7 +20,7 @@ class Bullet : public object{
         static int getType(){return 1;}
     private:
         int yStart;
-	    Sprite sprite;
+        Sprite sprite;
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################

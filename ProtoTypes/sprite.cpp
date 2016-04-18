@@ -8,6 +8,7 @@
  */
 #include "sprite.h"
 #include "oursdllib.h"
+#include <map>
 #include <SDL/SDL.h>
 /* Sprite constructor
  * sprite_file is the string containing the name of the sprite file
