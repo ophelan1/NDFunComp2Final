@@ -34,6 +34,15 @@ void apply_surface( int x, int y, SDL_Surface* src, SDL_Surface* dst, SDL_Rect *
 	// Blit the surface
 	SDL_BlitSurface( src, clip, dst, &off );
 }
+void fill_rect( int x1, int y1, int x2, int y2, Uint32 color, SDL_Surface* screen )
+{
+    SDL_Rect rect;
+    rect.x = x1;
+    rect.y = y1;
+    rect.w = abs( x1-x2 );
+    rect.h = abs( y1-y2 );
+    SDL_FillRect( screen, &rect, color );
+}
 void draw_point( int x, int y, Uint32 color, SDL_Surface* screen )
 {
     if ( ( x >= 0 )  && ( x < screen->w ) && ( y >= 0 ) && ( y < screen->h ) )

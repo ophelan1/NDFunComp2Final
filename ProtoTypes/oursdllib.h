@@ -27,4 +27,5 @@ SDL_Surface *load_image(std::string fname);
 void apply_surface( int x, int y, SDL_Surface* src, SDL_Surface* dst, SDL_Rect *clip = NULL );
 void draw_point( int x, int y, Uint32 color, SDL_Surface* screen );
 void draw_line( int x1, int y1, int x2, int y2, Uint32 color, SDL_Surface* screen );
+void fill_rect( int x1, int y1, int x2, int y2, Uint32 color, SDL_Surface* screen );
 #endif

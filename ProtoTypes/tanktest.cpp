@@ -39,9 +39,11 @@ int main( int argc, char** args )
 
     list<object*> objList;
 
-    Tank p1( SDLK_LEFT, SDLK_RIGHT, 0, SCREEN_WIDTH/2, SDLK_UP, SDLK_DOWN, SDLK_RCTRL, &objList );   
-    Tank p2( SDLK_a, SDLK_d, SCREEN_WIDTH/2, SCREEN_WIDTH, SDLK_s, SDLK_w, SDLK_LCTRL, &objList );   
+    Tank* p1 = new Tank( SDLK_LEFT, SDLK_RIGHT, 0, SCREEN_WIDTH/2, SDLK_UP, SDLK_DOWN, SDLK_RCTRL, &objList );   
+    Tank* p2 = new Tank( SDLK_a, SDLK_d, SCREEN_WIDTH/2, SCREEN_WIDTH, SDLK_s, SDLK_w, SDLK_LCTRL, &objList );   
     
+    objList.push_back(p1);
+    objList.push_back(p2);
 
     bool quit = false;
     unsigned char keyStates[400] = {0};
@@ -72,14 +74,18 @@ int main( int argc, char** args )
         if (keyStates[ SDLK_q ])
             quit = true;
         apply_surface( 0, 0, background, screen );
-        p1.onUpdate ( keyStates, &keyTaps );
-        p1.drawSprite( screen );
-        p2.onUpdate ( keyStates, &keyTaps );
-        p2.drawSprite( screen );
+        p1->onUpdate ( keyStates, &keyTaps );
+        p1->drawSprite( screen );
+        p2->onUpdate ( keyStates, &keyTaps );
+        p2->drawSprite( screen );
         for (auto i = objList.begin(); i != objList.end(); i++)
         {
             (**i).onUpdate();
             (**i).drawSprite( screen );
+            for (auto t = objList.begin(); t != objList.end(); t++)
+            {   if ( *i != *t )
+                    (*i)->checkCollision(**t);
+            }
             if ( (**i).is_dead() )
             {
                 (**i).onDeath(&objList);
