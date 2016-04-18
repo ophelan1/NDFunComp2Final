@@ -41,9 +41,9 @@ int main( int argc, char** args )
     background = load_image( "background.png" );
 
     list<object*> objList;
-
-    Tank* p1 = new Tank( SDLK_LEFT, SDLK_RIGHT, 0, SCREEN_WIDTH/2, SDLK_UP, SDLK_DOWN, SDLK_RCTRL, &objList );   
-    Tank* p2 = new Tank( SDLK_a, SDLK_d, SCREEN_WIDTH/2, SCREEN_WIDTH, SDLK_s, SDLK_w, SDLK_LCTRL, &objList );   
+  
+    Tank* p1 = new Tank( SDLK_a, SDLK_d, 0, SCREEN_WIDTH/2, SDLK_s, SDLK_w, SDLK_f, &objList );
+    Tank* p2 = new Tank( SDLK_LEFT, SDLK_RIGHT, SCREEN_WIDTH/2, SCREEN_WIDTH, SDLK_UP, SDLK_DOWN, SDLK_RALT, &objList ); 
     
     objList.push_back(p1);
     objList.push_back(p2);
@@ -53,7 +53,6 @@ int main( int argc, char** args )
     set<int> keyTaps;
     while ( !quit )
     {
-        // Start the frame timer
         keyTaps.clear();
         start = SDL_GetTicks();
         while ( SDL_PollEvent ( &e ) != 0 )
@@ -89,7 +88,6 @@ int main( int argc, char** args )
         // Show the background
         apply_surface( bgX, bgY, background, screen);
         apply_surface( bgX + background->w, bgY, background, screen);
-        // Show the dot
         p1->onUpdate ( keyStates, &keyTaps );
         p1->drawSprite( screen );
         p2->onUpdate ( keyStates, &keyTaps );
