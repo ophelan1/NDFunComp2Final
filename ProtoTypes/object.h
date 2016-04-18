@@ -28,19 +28,22 @@ class object{
         virtual void onUpdate() = 0;
         virtual bool is_dead() = 0;
         virtual void drawSprite(SDL_Surface* screen) = 0;
-        virtual void onCollision(object& a){ }
         virtual void onDeath(list<object*>* a){ }
+        virtual void kill(){type = 0;}
         virtual void checkCollision(object& a){ }
+        int getType(){return type;}
 	protected:
 		int xPos;
 		int yPos;
 		int dxVal;
 		int dyVal;
+        int type;
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 
 	object::object(){
+        type = 0;
 /*
   	cout << "Please Enter a Value for the xPos: " << endl;
   	std::cin >> xPos;

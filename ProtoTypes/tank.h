@@ -23,8 +23,6 @@ class Tank : public object{
         void onUpdate();
         bool is_dead();
         virtual void checkCollision(object &b);
-        virtual void onCollision(object &b){ }
-        virtual void onCollision(Bullet &b);
 	private:
 		int dxMax;
 		int xMax;
@@ -47,6 +45,7 @@ class Tank : public object{
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 
     Tank::Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<object*>* bullets) : sprite(), turret("line360.png",0,0,32,32,360) {
+        type = 2;
         xPos = 300*SCALE;
         yPos = 600*SCALE;
         dxVal = 0;
@@ -111,12 +110,6 @@ class Tank : public object{
         return false;
     }
 
-    void Tank::onCollision(Bullet &b)
-    {
-        std::cout << "TEST" << std::endl;
-        hp -= 1;
-        b.kill();
-    }
  
     void Tank::drawSprite(SDL_Surface* screen)
     {
@@ -150,9 +143,10 @@ void Tank::checkCollision(object& a)
         const int sprite_height = sprite.getHeight()*SCALE;
         const int ox = a.get_x() * SCALE;
         const int oy = a.get_y() * SCALE;
-        if ( ox >= xPos && oy >= yPos && ox <= xPos + sprite_width && oy <= yPos + sprite_height )
+        if ( ox >= xPos -sprite_width/2 && oy >= yPos -sprite_height/2 && ox <= xPos + sprite_width/2 && oy <= yPos + sprite_height/2 && a.getType() == 3 )
         {
-            a.onCollision(*this);
+            hp -= 1;
+            a.kill();
         }
 }
 #endif

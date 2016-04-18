@@ -18,6 +18,7 @@ class Boom : public object{
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 Boom::Boom(int x, int y) : sprite("boom.png", 0, 0, 64, 64, 7)
 {
+    type = 3;
     xPos = x*SCALE;
     yPos = y*SCALE;
 }
