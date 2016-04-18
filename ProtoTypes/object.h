@@ -16,6 +16,7 @@ class object{
 	public:
 		static const int SCALE = 100;
 		object();			
+        virtual ~object() { }
 		int get_x(void);						//ALL FUNCTIONS WHICH RETURN OBJECT VALUES START W/ 'get'
 		int get_y(void);
 		int get_dx(void);						//ALL FUNCTIONS WHICH RETURN OBJECT VALUES START W/ 'get'

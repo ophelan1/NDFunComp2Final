@@ -1,4 +1,4 @@
-FLAGS=-lSDL -lSDL_image -std=c++11
+FLAGS=-lSDL -lSDL_image -std=c++11 -Wall
 
 all: tanktest
 

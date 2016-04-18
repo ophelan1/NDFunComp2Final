@@ -39,8 +39,8 @@ class Tank : public object{
 		static const int FRICTION_X = 0.1*SCALE;
         static const int DAMAGE_PER_BULLET = 10;
         int max_hits = MAX_HP/DAMAGE_PER_BULLET;
-		Sprite turret;
 	    Sprite sprite;
+		Sprite turret;
         list<object*>*bulList;
 };
 
@@ -70,7 +70,6 @@ class Tank : public object{
     
     void Tank::onUpdate(const unsigned char* state, set<int>* taps){
         static int ODD_FRAME = 0;
-        const int sprite_height = sprite.getHeight()*SCALE;
         const int sprite_width = sprite.getWidth()*SCALE;
         if (state[ key_left ] && (dxVal > -dxMax) && (xPos > xMin))
             dxVal -= ACCEL_X;
@@ -124,7 +123,6 @@ class Tank : public object{
         double fill = ((double)(xMax-xMin)*0.75*(double)hp/(double)MAX_HP);
             std::cout << fill << std::endl;
         fill_rect( (xMin+(xMax-xMin)/4)/SCALE, 17, (xMin+fill)/SCALE, 23, color::GREEN, screen );
-        const int sprite_width = sprite.getWidth()*SCALE;
         const int sprite_height = sprite.getHeight()*SCALE;
         int angle = turret.getFrame();
         int x = xPos;
