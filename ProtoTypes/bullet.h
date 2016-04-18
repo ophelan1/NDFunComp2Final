@@ -15,7 +15,9 @@ class Bullet : public object{
         void drawSprite(SDL_Surface* screen);
         void onUpdate();
         bool is_dead();
-        virtual void onDeath(list<object*>*);
+        void kill();
+        void onDeath(list<object*>*);
+        virtual void onCollision(object& a){a.onCollision(*this);}
     private:
         int yStart;
 	    Sprite sprite;
@@ -34,7 +36,12 @@ Bullet::Bullet(int x, int y, int angle, int power) : sprite("bullet.png")
 
 void Bullet::onDeath(list<object*>* li)
 {
-    li->push_back(new Boom(xPos/SCALE+sprite.getWidth()/2, yPos/SCALE+sprite.getHeight()/2));
+    li->push_back(new Boom(xPos/SCALE, yPos/SCALE));
+}
+
+void Bullet::kill()
+{
+    yPos = yStart+1;
 }
 
 bool Bullet::is_dead()

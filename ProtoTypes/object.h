@@ -28,7 +28,9 @@ class object{
         virtual void onUpdate() = 0;
         virtual bool is_dead() = 0;
         virtual void drawSprite(SDL_Surface* screen) = 0;
-        virtual void onDeath(list<object*>*){ }
+        virtual void onCollision(object& a){ }
+        virtual void onDeath(list<object*>* a){ }
+        virtual void checkCollision(object& a){ }
 	protected:
 		int xPos;
 		int yPos;

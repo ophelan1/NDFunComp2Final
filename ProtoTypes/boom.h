@@ -10,6 +10,7 @@ class Boom : public object{
         void drawSprite(SDL_Surface* screen);
         void onUpdate();
         bool is_dead();
+        void onCollision(object& a){ }
     private:
 	    Sprite sprite;
 };
