@@ -47,8 +47,11 @@ class Tank : public object{
 
     Tank::Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<object*>* bullets) : sprite(), turret("line360.png",0,0,32,32,360) {
         type = 2;
+<<<<<<< HEAD
         xPos = 300*SCALE;
         yPos = 675*SCALE;
+=======
+>>>>>>> fc4afda6800c8837ab65fb8178118a8faf58b64b
         xPos = ((maxX-minX)/2+minX)*SCALE;
         yPos = 675*SCALE;
         dxVal = 0;
@@ -95,11 +98,11 @@ class Tank : public object{
         }
 
         if (state[ key_up ])
-            if (ODD_FRAME=!ODD_FRAME)
+            if ((ODD_FRAME=(ODD_FRAME+1)%3) == 0)
                 turret.incFrame(1);
 
         if (state[ key_down ])
-            if (ODD_FRAME=!ODD_FRAME)
+            if ((ODD_FRAME=(ODD_FRAME+1)%3) == 0)
                 turret.incFrame(-1);
     
         if (taps->find(key_fire)!=taps->end())

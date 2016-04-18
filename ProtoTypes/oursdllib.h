@@ -21,7 +21,7 @@ namespace color
     static const Uint32 BLACK   =   0xFF000000;
     static const Uint32 YELLOW  =   0xFFFFFF00;
     static const Uint32 CYAN    =   0xFF00FFFF;
-    static const Uint32 PURPLE  =   0xFFFF00FF;
+    static const Uint32 MAGENTA =   0xFFFF00FF;
 }
 // Loads and optimizes an image from a file
 SDL_Surface *load_image(std::string fname);
