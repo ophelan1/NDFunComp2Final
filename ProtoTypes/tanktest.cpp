@@ -89,10 +89,18 @@ int main( int argc, char** args )
         apply_surface( bgX, bgY, background, screen);
         apply_surface( bgX + screen->w, bgY, background, screen);
         apply_surface( bgX + background->w, bgY, background, screen);
-        p1->onUpdate ( keyStates, &keyTaps );
-        p1->drawSprite( screen );
-        p2->onUpdate ( keyStates, &keyTaps );
-        p2->drawSprite( screen );
+        cout << 1 << endl;
+        if ( p1 != NULL )
+        {
+            p1->onUpdate ( keyStates, &keyTaps );
+            p1->drawSprite( screen );
+        }
+        if ( p2 != NULL )
+        {
+            p2->onUpdate ( keyStates, &keyTaps );
+            p2->drawSprite( screen );
+        }
+        cout << 2 << endl;
         for (auto i = objList.begin(); i != objList.end(); i++)
         {
             (**i).onUpdate();

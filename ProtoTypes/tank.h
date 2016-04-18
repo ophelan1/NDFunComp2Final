@@ -38,7 +38,6 @@ class Tank : public object{
 		static const int ACCEL_X = 0.25*SCALE;
 		static const int FRICTION_X = 0.1*SCALE;
         static const int DAMAGE_PER_BULLET = 10;
-        int max_hits = MAX_HP/DAMAGE_PER_BULLET;
 	    Sprite sprite;
 		Sprite turret;
         list<object*>*bulList;
@@ -108,7 +107,7 @@ class Tank : public object{
 
     bool Tank::is_dead()
     {
-        if (max_hits < 1) {
+        if (hp <= 0) {
             return true;
         }
         else {
@@ -120,9 +119,8 @@ class Tank : public object{
     void Tank::drawSprite(SDL_Surface* screen)
     {
         fill_rect( (xMin+(xMax-xMin)/4)/SCALE,   16, (xMin+(xMax-xMin)*3/4)/SCALE,                 24, color::BLACK, screen );
-        double fill = ((double)(xMax-xMin)*0.75*(double)hp/(double)MAX_HP);
-            std::cout << fill << std::endl;
-        fill_rect( (xMin+(xMax-xMin)/4)/SCALE, 17, (xMin+fill)/SCALE, 23, color::GREEN, screen );
+        double fill = ((double)(xMax-xMin)/2*(double)hp/(double)MAX_HP);
+        fill_rect( (xMin+(xMax-xMin)/4)/SCALE, 17, (xMin+(xMax-xMin)/4+fill)/SCALE, 23, color::GREEN, screen );
         const int sprite_height = sprite.getHeight()*SCALE;
         int angle = turret.getFrame();
         int x = xPos;
@@ -153,7 +151,6 @@ void Tank::checkCollision(object& a)
         if ( ox >= xPos -sprite_width/2 && oy >= yPos -sprite_height/2 && ox <= xPos + sprite_width/2 && oy <= yPos + sprite_height/2 && a.getType() == 3 )
         {
             hp -= DAMAGE_PER_BULLET;
-            max_hits -= 1;
             a.kill();
         }
 }
