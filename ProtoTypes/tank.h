@@ -47,13 +47,10 @@ class Tank : public object{
 
     Tank::Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<object*>* bullets) : sprite(), turret("line360.png",0,0,32,32,360) {
         type = 2;
-<<<<<<< HEAD
         xPos = 300*SCALE;
         yPos = 675*SCALE;
-=======
         xPos = ((maxX-minX)/2+minX)*SCALE;
-        yPos = 600*SCALE;
->>>>>>> 2d48882c2e1017243eb64b33c9db98623d15211b
+        yPos = 675*SCALE;
         dxVal = 0;
         dyVal = 0;
         hp = 100;
