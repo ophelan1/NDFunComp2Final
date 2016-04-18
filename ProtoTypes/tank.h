@@ -93,11 +93,11 @@ class Tank : public object{
         }
 
         if (state[ key_up ])
-            if (ODD_FRAME=!ODD_FRAME)
+            if ((ODD_FRAME=(ODD_FRAME+1)%3) == 0)
                 turret.incFrame(1);
 
         if (state[ key_down ])
-            if (ODD_FRAME=!ODD_FRAME)
+            if ((ODD_FRAME=(ODD_FRAME+1)%3) == 0)
                 turret.incFrame(-1);
     
         if (taps->find(key_fire)!=taps->end())
