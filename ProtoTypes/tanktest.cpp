@@ -19,6 +19,9 @@ int main( int argc, char** args )
     SDL_Surface *screen = NULL;
     SDL_Surface *background = NULL;
 
+    // the offsets of the background
+    int bgX = 0, bgY = 0;
+
     SDL_Event e;
 
     Uint32 start = 0;
@@ -35,7 +38,7 @@ int main( int argc, char** args )
 
     SDL_WM_SetCaption( SCREEN_CAPTION.c_str(), NULL );
 
-    background = load_image( "back.bmp" );
+    background = load_image( "background.png" );
 
     list<object*> objList;
 
@@ -50,6 +53,7 @@ int main( int argc, char** args )
     set<int> keyTaps;
     while ( !quit )
     {
+        // Start the frame timer
         keyTaps.clear();
         start = SDL_GetTicks();
         while ( SDL_PollEvent ( &e ) != 0 )
@@ -71,9 +75,21 @@ int main( int argc, char** args )
                 break;
             }
         }
+
         if (keyStates[ SDLK_q ])
             quit = true;
-        apply_surface( 0, 0, background, screen );
+
+        // Scroll background
+        bgX -= 2;
+        // If background has gone too far
+        if ( bgX <= -background->w ) {
+            // Reset the offset
+            bgX = 0;
+        }
+        // Show the background
+        apply_surface( bgX, bgY, background, screen);
+        apply_surface( bgX + background->w, bgY, background, screen);
+        // Show the dot
         p1->onUpdate ( keyStates, &keyTaps );
         p1->drawSprite( screen );
         p2->onUpdate ( keyStates, &keyTaps );
