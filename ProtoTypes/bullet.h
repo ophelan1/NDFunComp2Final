@@ -10,7 +10,7 @@
 
 class Bullet : public object{
     public:
-        static const int ACCEL_Y = 0.12*SCALE;
+        static const int ACCEL_Y = 0.22*SCALE;
         Bullet(int x, int y, int angle, int power); 
         void drawSprite(SDL_Surface* screen);
         void onUpdate();

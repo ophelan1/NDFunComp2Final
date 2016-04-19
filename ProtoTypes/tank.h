@@ -34,7 +34,7 @@ class Tank : public object{
         int key_fire;
         int hp;
         static const int MAX_HP = 100;
-		static const int SHOT_POWER = 11;
+		static const int SHOT_POWER = 16;
 		static const int ACCEL_X = 0.25*SCALE;
 		static const int FRICTION_X = 0.1*SCALE;
         static const int DAMAGE_PER_BULLET = 10;
