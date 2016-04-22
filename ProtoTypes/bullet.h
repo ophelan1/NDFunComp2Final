@@ -15,9 +15,7 @@ class Bullet : public object{
         void drawSprite(SDL_Surface* screen);
         void onUpdate();
         bool is_dead();
-        void kill();
         void onDeath(list<object*>*);
-        static int getType(){return 1;}
     private:
         int yStart;
         Sprite sprite;
@@ -26,28 +24,25 @@ class Bullet : public object{
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 Bullet::Bullet(int x, int y, int angle, int power) : sprite("bullet.png")
 {
-    type = 0;
-    xPos = x*SCALE;
-    yPos = y*SCALE;
-    yStart = yPos;
+    type = 1;
     dxVal = power*SCALE*cos(angle * M_PI / 180.0);
     dyVal = -power*SCALE*sin(angle * M_PI / 180.0);
+    xPos = x*SCALE + dxVal;
+    yPos = y*SCALE + dyVal;
+    yStart = yPos;
 }
 //################ BASIC UTILITIES ############################
 
 void Bullet::onDeath(list<object*>* li)
 {
+    if (yPos > yStart)
+        yPos = yStart;
     li->push_back(new Boom(xPos/SCALE, yPos/SCALE));
-}
-
-void Bullet::kill()
-{
-    yPos = yStart+1;
 }
 
 bool Bullet::is_dead()
 {
-    return yPos > yStart;
+    return yPos > yStart || type == 0;
 }
 
 void Bullet::onUpdate()

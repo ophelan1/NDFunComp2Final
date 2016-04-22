@@ -6,6 +6,7 @@
 #include <fstream>
 #include <vector>
 #include <list>
+#include <set>
 #include <string>
 #include <algorithm>
 #include <SDL/SDL.h>
@@ -26,6 +27,7 @@ class object{
 		void change_dx(int);
 		void change_dy(int);
 		void makeChange(void);				//ALL FUNCTIONS CONCERNED WITH ANIMATION (UPDATING POSITIONS) START W/ 'make'				
+		virtual void onUpdate(const unsigned char* state, set<int>* taps){ onUpdate(); }
         virtual void onUpdate() = 0;
         virtual bool is_dead() = 0;
         virtual void drawSprite(SDL_Surface* screen) = 0;

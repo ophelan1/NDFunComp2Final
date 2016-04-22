@@ -69,10 +69,9 @@ class Tank : public object{
     
     void Tank::onUpdate(const unsigned char* state, set<int>* taps){
         static int ODD_FRAME = 0;
-        const int sprite_width = sprite.getWidth()*SCALE;
         if (state[ key_left ] && (dxVal > -dxMax) && (xPos > xMin))
             dxVal -= ACCEL_X;
-        else if (state[ key_right ] && (dxVal < dxMax) && (xPos + sprite_width < xMax))
+        else if (state[ key_right ] && (dxVal < dxMax) && (xPos < xMax))
             dxVal += ACCEL_X;
     	else if (dxVal != 0)
 		dxVal += dxVal > 0? -FRICTION_X:FRICTION_X;
@@ -86,17 +85,17 @@ class Tank : public object{
             dxVal = 0;
             xPos = xMin;
         }
-        if (xPos + sprite_width> xMax){
+        if (xPos > xMax){
             dxVal = 0;
-            xPos = xMax- sprite_width;
+            xPos = xMax;
         }
 
         if (state[ key_up ])
-            if ((ODD_FRAME=(ODD_FRAME+1)%3) == 0)
+            if ((ODD_FRAME=(ODD_FRAME+1)%2) == 0)
                 turret.incFrame(1);
 
         if (state[ key_down ])
-            if ((ODD_FRAME=(ODD_FRAME+1)%3) == 0)
+            if ((ODD_FRAME=(ODD_FRAME+1)%2) == 0)
                 turret.incFrame(-1);
     
         if (taps->find(key_fire)!=taps->end())

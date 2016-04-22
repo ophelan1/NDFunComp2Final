@@ -2,6 +2,7 @@
 #include "oursdllib.h"
 #include "tank.h"
 #include "bullet.h"
+#include "block.h"
 #include <string>
 #include <iostream>
 #include <list>
@@ -42,9 +43,12 @@ int main( int argc, char** args )
 
     list<object*> objList;
   
-    Tank* p1 = new Tank( SDLK_a, SDLK_d, 0, SCREEN_WIDTH/2, SDLK_s, SDLK_w, SDLK_f, &objList );
-    Tank* p2 = new Tank( SDLK_LEFT, SDLK_RIGHT, SCREEN_WIDTH/2, SCREEN_WIDTH, SDLK_UP, SDLK_DOWN, SDLK_RALT, &objList ); 
+    Tank* p1 = new Tank( SDLK_a, SDLK_d, 0, SCREEN_WIDTH/2-32, SDLK_s, SDLK_w, SDLK_f, &objList );
+    Tank* p2 = new Tank( SDLK_LEFT, SDLK_RIGHT, SCREEN_WIDTH/2+32, SCREEN_WIDTH, SDLK_UP, SDLK_DOWN, SDLK_RALT, &objList ); 
     
+//    for (int i = 0; i < 100; i++)
+//        objList.push_back( new Block( SCREEN_WIDTH/2-(10*16)+(i%10)*32, SCREEN_HEIGHT-100-(i/10)*32, 32, 32 ) );
+
     objList.push_back(p1);
     objList.push_back(p2);
 
@@ -89,19 +93,9 @@ int main( int argc, char** args )
         apply_surface( bgX, bgY, background, screen);
         apply_surface( bgX + screen->w, bgY, background, screen);
         apply_surface( bgX + background->w, bgY, background, screen);
-        if ( p1 != NULL )
-        {
-            p1->onUpdate ( keyStates, &keyTaps );
-            p1->drawSprite( screen );
-        }
-        if ( p2 != NULL )
-        {
-            p2->onUpdate ( keyStates, &keyTaps );
-            p2->drawSprite( screen );
-        }
         for (auto i = objList.begin(); i != objList.end(); i++)
         {
-            (**i).onUpdate();
+            (**i).onUpdate( keyStates, &keyTaps );
             (**i).drawSprite( screen );
             for (auto t = objList.begin(); t != objList.end(); t++)
             {   if ( *i != *t )
