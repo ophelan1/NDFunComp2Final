@@ -81,8 +81,15 @@ void GameScene::onUpdate(unsigned char keyStates[400], set<int> keyTaps)
         if ( (**i).is_dead() )
         {
             (**i).onDeath(&objList);
-            delete *i;
-            i = objList.erase(i);
+            if ( !objList.empty() )
+            {
+                delete *i;
+                i = objList.erase(i);
+            }
+            else
+            {
+                break;
+            }
         }
     }
 }

@@ -144,6 +144,7 @@ class Tank : public object{
 void Tank::onDeath(list<object*>* a)
 {
     a->push_back( new Boom( xPos/SCALE, yPos/SCALE, "bigboom.png", 7, 128, 128 ) );
+    Scene::switchScenes( "menu" );
 }
 void Tank::checkCollision(object& a)
 {
