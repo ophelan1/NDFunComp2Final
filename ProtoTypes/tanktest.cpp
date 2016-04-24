@@ -46,8 +46,8 @@ int main( int argc, char** args )
     Tank* p1 = new Tank( SDLK_a, SDLK_d, 0, SCREEN_WIDTH/2-32, SDLK_s, SDLK_w, SDLK_f, &objList );
     Tank* p2 = new Tank( SDLK_LEFT, SDLK_RIGHT, SCREEN_WIDTH/2+32, SCREEN_WIDTH, SDLK_UP, SDLK_DOWN, SDLK_RALT, &objList ); 
     
-//    for (int i = 0; i < 100; i++)
-//        objList.push_back( new Block( SCREEN_WIDTH/2-(10*16)+(i%10)*32, SCREEN_HEIGHT-100-(i/10)*32, 32, 32 ) );
+    for (int i = 0; i < 100; i++)
+        objList.push_back( new Block( SCREEN_WIDTH/2-(10*16)+(i%10)*32, SCREEN_HEIGHT-100-(i/10)*32, 32, 32 ) );
 
     objList.push_back(p1);
     objList.push_back(p2);

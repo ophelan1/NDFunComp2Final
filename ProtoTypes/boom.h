@@ -3,10 +3,11 @@
 
 #include "sprite.h"
 #include "object.h"
+#include <string>
 
 class Boom : public object{
     public:
-        Boom(int x, int y); 
+        Boom(int x, int y, std::string file="boom.png", int num=7, int w=64, int h=64); 
         void drawSprite(SDL_Surface* screen);
         void onUpdate();
         bool is_dead();
@@ -16,7 +17,7 @@ class Boom : public object{
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
-Boom::Boom(int x, int y) : sprite("boom.png", 0, 0, 64, 64, 7)
+Boom::Boom(int x, int y, std::string file, int num, int w, int h) : sprite(file, 0, 0, w, h, num)
 {
     type = 3;
     xPos = x*SCALE;

@@ -22,7 +22,8 @@ class Tank : public object{
 		void onUpdate(const unsigned char* state, set<int>* taps);
         void onUpdate();
         bool is_dead();
-        virtual void checkCollision(object &b);
+        void onDeath(list<object*>* a);
+        void checkCollision(object &b);
 	private:
 		int dxMax;
 		int xMax;
@@ -128,7 +129,7 @@ class Tank : public object{
         int yprev = y;
         int dx =  SHOT_POWER * SCALE * cos( angle * M_PI / 180.0 );
         int dy = -SHOT_POWER * SCALE * sin( angle * M_PI / 180.0 );
-        while ( y<yPos+sprite_height && x>=0 && x<screen->w*SCALE )
+        while ( y<yPos+sprite_height && x>=0 && x<=screen->w*SCALE )
         {
             draw_line( xprev/SCALE, yprev/SCALE, x/SCALE, y/SCALE, color::RED, screen );
             xprev = x;
@@ -140,7 +141,10 @@ class Tank : public object{
         sprite.draw( screen, xPos/SCALE-sprite.getWidth()/2, yPos/SCALE-sprite.getHeight()/2);
     	turret.draw( screen, xPos/SCALE-sprite.getWidth()/2, yPos/SCALE-sprite.getHeight()/2);
     }
-
+void Tank::onDeath(list<object*>* a)
+{
+    a->push_back( new Boom( xPos/SCALE, yPos/SCALE, "bigboom.png", 7, 128, 128 ) );
+}
 void Tank::checkCollision(object& a)
 {
         const int sprite_width = sprite.getWidth()*SCALE;
