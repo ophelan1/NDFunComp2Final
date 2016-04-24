@@ -60,6 +60,8 @@ int main( int argc, char** args )
         Scene::update( keyStates, keyTaps );
         if (keyStates[ SDLK_q ])
             quit = true;
+        if (keyStates[ SDLK_r ])
+            Scene::switchScenes( "menu" );
         Scene::draw( screen );
         if ( SDL_Flip( screen ) == -1 )
             return 1;
@@ -67,6 +69,7 @@ int main( int argc, char** args )
         if ( ( SDL_GetTicks() - start ) < 1000 / SCREEN_FPS )
             SDL_Delay( ( 1000 / SCREEN_FPS ) - ( SDL_GetTicks() - start ) ); 
     }
+    Scene::free();
     SDL_Quit();
     return 0;
 }

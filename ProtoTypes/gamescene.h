@@ -26,6 +26,8 @@ class GameScene : public Scene
         ~GameScene();
 		void onDraw(SDL_Surface* screen);
 		void onUpdate(unsigned char keyStates[400], set<int> keytaps);
+        void onStart();
+        void onEnd();
 };
 
 GameScene::GameScene() : objList()
@@ -33,7 +35,11 @@ GameScene::GameScene() : objList()
     bgX = 0;
     bgY = 0;
     background = load_image( "background.png" );
-  
+}
+void GameScene::onStart()
+{
+    onEnd();
+
     Tank* p1 = new Tank( SDLK_a, SDLK_d, 0, 1280/2-32, SDLK_s, SDLK_w, SDLK_f, &objList );
     Tank* p2 = new Tank( SDLK_LEFT, SDLK_RIGHT, 1280/2+32, 1280, SDLK_UP, SDLK_DOWN, SDLK_RALT, &objList ); 
     
@@ -42,15 +48,19 @@ GameScene::GameScene() : objList()
 
     objList.push_back(p1);
     objList.push_back(p2);
-
 }
-GameScene::~GameScene()
+void GameScene::onEnd()
 {
-    SDL_FreeSurface( background );
     for (auto i = objList.begin(); i != objList.end(); i++)
     {
         delete (*i);
     }
+    objList.clear();
+}
+GameScene::~GameScene()
+{
+    SDL_FreeSurface( background );
+    onEnd();
 }
 void GameScene::onUpdate(unsigned char keyStates[400], set<int> keyTaps)
 {

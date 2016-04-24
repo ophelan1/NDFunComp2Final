@@ -21,21 +21,31 @@ class Scene
         static void free();
 		virtual void onDraw(SDL_Surface* screen) = 0;
 		virtual void onUpdate(unsigned char keyStates[400], set<int> keytaps)  = 0;
+        virtual void onStart(){ }
+        virtual void onEnd(){ }
         virtual ~Scene(){ }
 };
 map<string, Scene*> Scene::scenes;
 Scene* Scene::curScene = NULL;
 bool Scene::switchScenes(string newscene)
 {
+    if (curScene != NULL)
+        curScene->onEnd();
+
+    bool suc = true;
     try
     {
         curScene = scenes.at(newscene);
     }
     catch (const std::out_of_range& oor)
     {
-        return false;
+        suc = false;
     }
-    return true;
+
+    if (curScene != NULL)
+        curScene->onStart();
+
+    return suc;
 }
 void Scene::addScene(string name, Scene* scene)
 {
@@ -60,5 +70,6 @@ void Scene::free()
     {
         delete (*i).second;
     }
+    scenes.clear();
 }
 #endif

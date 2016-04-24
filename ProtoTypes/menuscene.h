@@ -14,6 +14,7 @@ class MenuScene : public Scene
         SDL_Surface *background;
 	public:
         MenuScene();
+        ~MenuScene();
 		void onDraw(SDL_Surface* screen);
 		void onUpdate(unsigned char keyStates[400], set<int> keytaps);
 };
@@ -21,6 +22,10 @@ class MenuScene : public Scene
 MenuScene::MenuScene()
 {
     background = load_image( "menu.png" );
+}
+MenuScene::~MenuScene()
+{
+    SDL_FreeSurface( background );
 }
 void MenuScene::onUpdate(unsigned char keyStates[400], set<int> keyTaps)
 {
