@@ -1,11 +1,8 @@
 #include <SDL/SDL.h>
-#include "oursdllib.h"
-#include "tank.h"
-#include "bullet.h"
-#include "block.h"
+#include "scene.h"
+#include "gamescene.h"
+#include "menuscene.h"
 #include <string>
-#include <iostream>
-#include <list>
 #include <set>
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
@@ -18,10 +15,6 @@ using namespace std;
 int main( int argc, char** args )
 {
     SDL_Surface *screen = NULL;
-    SDL_Surface *background = NULL;
-
-    // the offsets of the background
-    int bgX = 0, bgY = 0;
 
     SDL_Event e;
 
@@ -39,22 +32,11 @@ int main( int argc, char** args )
 
     SDL_WM_SetCaption( SCREEN_CAPTION.c_str(), NULL );
 
-    background = load_image( "background.png" );
-
-    list<object*> objList;
-  
-    Tank* p1 = new Tank( SDLK_a, SDLK_d, 0, SCREEN_WIDTH/2-32, SDLK_s, SDLK_w, SDLK_f, &objList );
-    Tank* p2 = new Tank( SDLK_LEFT, SDLK_RIGHT, SCREEN_WIDTH/2+32, SCREEN_WIDTH, SDLK_UP, SDLK_DOWN, SDLK_RALT, &objList ); 
-    
-    for (int i = 0; i < 100; i++)
-        objList.push_back( new Block( SCREEN_WIDTH/2-(10*16)+(i%10)*32, SCREEN_HEIGHT-100-(i/10)*32, 32, 32 ) );
-
-    objList.push_back(p1);
-    objList.push_back(p2);
-
     bool quit = false;
     unsigned char keyStates[400] = {0};
     set<int> keyTaps;
+    Scene::addScene( "menu", new MenuScene() );
+    Scene::addScene( "game", new GameScene() );
     while ( !quit )
     {
         keyTaps.clear();
@@ -72,52 +54,18 @@ int main( int argc, char** args )
                 case SDL_KEYDOWN:
                     keyStates[e.key.keysym.sym] = 1;
                     keyTaps.insert(e.key.keysym.sym);
-                    #ifdef VERBOSE
-                        cout << "PRESSED " << e.key.keysym.sym << " " << SDLK_LEFT << endl;
-                    #endif
                 break;
             }
         }
-
+        Scene::update( keyStates, keyTaps );
         if (keyStates[ SDLK_q ])
             quit = true;
-
-        // Scroll background
-        bgX -= 2;
-        // If background has gone too far
-        if ( bgX <= -background->w ) {
-            // Reset the offset
-            bgX = 0;
-        }
-        // Show the background
-        apply_surface( bgX, bgY, background, screen);
-        apply_surface( bgX + screen->w, bgY, background, screen);
-        apply_surface( bgX + background->w, bgY, background, screen);
-        for (auto i = objList.begin(); i != objList.end(); i++)
-        {
-            (**i).onUpdate( keyStates, &keyTaps );
-            (**i).drawSprite( screen );
-            for (auto t = objList.begin(); t != objList.end(); t++)
-            {   if ( *i != *t )
-                    (*i)->checkCollision(**t);
-            }
-            if ( (**i).is_dead() )
-            {
-                (**i).onDeath(&objList);
-                delete *i;
-                i = objList.erase(i);
-            }
-        }
+        Scene::draw( screen );
         if ( SDL_Flip( screen ) == -1 )
             return 1;
         frame++;
         if ( ( SDL_GetTicks() - start ) < 1000 / SCREEN_FPS )
             SDL_Delay( ( 1000 / SCREEN_FPS ) - ( SDL_GetTicks() - start ) ); 
-    }
-    SDL_FreeSurface( background );
-    for (auto i = objList.begin(); i != objList.end(); i++)
-    {
-        delete (*i);
     }
     SDL_Quit();
     return 0;
