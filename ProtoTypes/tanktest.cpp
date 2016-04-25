@@ -1,4 +1,5 @@
 #include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
 #include "scene.h"
 #include "gamescene.h"
 #include "menuscene.h"
@@ -15,6 +16,10 @@ using namespace std;
 int main( int argc, char** args )
 {
     SDL_Surface *screen = NULL;
+    Mix_Music *music = NULL;
+    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+    music = Mix_LoadMUS("beat.wav");
+    Mix_PlayMusic(music, -1);
 
     SDL_Event e;
 
@@ -71,5 +76,9 @@ int main( int argc, char** args )
     }
     Scene::free();
     SDL_Quit();
+    // Free music
+    Mix_FreeMusic( music );
+    // Quit SDL Mixer
+    Mix_CloseAudio();
     return 0;
 }

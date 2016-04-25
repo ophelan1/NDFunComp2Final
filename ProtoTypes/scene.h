@@ -49,10 +49,11 @@ bool Scene::switchScenes(string newscene)
 }
 void Scene::addScene(string name, Scene* scene)
 {
-    if (scenes.size()==0)
+    if ( scenes.size()==0 ) {
         curScene = scene;
+    }
 
-    scenes.insert({name, scene});
+    scenes.insert(make_pair(name, scene));
 }
 void Scene::update(unsigned char keyStates[400], set<int> keytaps)
 {
