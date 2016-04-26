@@ -4,6 +4,7 @@
 #include "sprite.h"
 #include "object.h"
 #include "bullet.h"
+#include "bigboom.h"
 #include "oursdllib.h"
 #include <SDL/SDL.h>
 #include <SDL/SDL_keyboard.h>
@@ -143,8 +144,7 @@ class Tank : public object{
     }
 void Tank::onDeath(list<object*>* a)
 {
-    a->push_back( new Boom( xPos/SCALE, yPos/SCALE, "bigboom.png", 7, 128, 128 ) );
-    Scene::switchScenes( "menu" );
+    a->push_back( new BigBoom( xPos/SCALE, yPos/SCALE, "bigboom.png", 21, 128, 128 ) );
 }
 void Tank::checkCollision(object& a)
 {

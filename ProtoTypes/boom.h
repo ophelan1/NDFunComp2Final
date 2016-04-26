@@ -26,7 +26,7 @@ Boom::Boom(int x, int y, std::string file, int num, int w, int h) : sprite(file,
 //################ BASIC UTILITIES ############################
 
 bool Boom::is_dead(){
-    return sprite.getFrame() == 6;
+    return sprite.getFrame() == sprite.getFrames()-1;
 }
 
 void Boom::onUpdate(){

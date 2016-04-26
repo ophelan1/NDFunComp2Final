@@ -47,6 +47,10 @@ void Sprite::animate()
 		sprite_index += image_number;
 	off.x = off.w*sprite_index;
 }
+int Sprite::getFrames()
+{
+	return image_number;
+}
 int Sprite::getFrame()
 {
 	return sprite_index;

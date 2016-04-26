@@ -13,15 +13,27 @@
 // A namespace for ANSI color constants
 namespace color
 {
-                                    //AARRGGBB
-    static const Uint32 RED     =   0xFFFF0000;
-    static const Uint32 GREEN   =   0xFF00FF00;
-    static const Uint32 BLUE    =   0xFF0000FF;
-    static const Uint32 WHITE   =   0xFFFFFFFF;
-    static const Uint32 BLACK   =   0xFF000000;
-    static const Uint32 YELLOW  =   0xFFFFFF00;
-    static const Uint32 CYAN    =   0xFF00FFFF;
-    static const Uint32 MAGENTA =   0xFFFF00FF;
+    #ifdef __linux__
+                                        //AARRGGBB
+        static const Uint32 RED     =   0xFFFF0000;
+        static const Uint32 GREEN   =   0xFF00FF00;
+        static const Uint32 BLUE    =   0xFF0000FF;
+        static const Uint32 WHITE   =   0xFFFFFFFF;
+        static const Uint32 BLACK   =   0xFF000000;
+        static const Uint32 YELLOW  =   0xFFFFFF00;
+        static const Uint32 CYAN    =   0xFF00FFFF;
+        static const Uint32 MAGENTA =   0xFFFF00FF;
+    #else // For Mac
+                                        //RRGGBBAA
+        static const Uint32 RED     =   0xFF0000FF;
+        static const Uint32 GREEN   =   0x00FF00FF;
+        static const Uint32 BLUE    =   0x0000FFFF;
+        static const Uint32 WHITE   =   0xFFFFFFFF;
+        static const Uint32 BLACK   =   0x000000FF;
+        static const Uint32 YELLOW  =   0xFFFF00FF;
+        static const Uint32 CYAN    =   0x00FFFFFF;
+        static const Uint32 MAGENTA =   0xFF00FFFF;
+    #endif
 }
 // Loads and optimizes an image from a file
 SDL_Surface *load_image(std::string fname);
