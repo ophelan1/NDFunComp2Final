@@ -171,7 +171,7 @@ class Tank : public object{
     // check for collisions against explosions
     void Tank::checkCollision(object& a)
     {
-            const int sprite_width = sprite.getWidth()*SCALE;
+            const int sprite_width = 2.5*sprite.getWidth()*SCALE;
             const int sprite_height = sprite.getHeight()*SCALE;
             const int ox = a.get_x() * SCALE;
             const int oy = a.get_y() * SCALE;
