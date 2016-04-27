@@ -19,7 +19,6 @@ class Block : public object{
     private:
 	    int w; // width of the block
         int h; // height of the block
-        bool hit; // whether or not the block was hit and must die
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
@@ -33,14 +32,12 @@ Block::Block(int x, int y, int wa, int ha)
     h    = ha*SCALE;
     xPos = x *SCALE;
     yPos = y *SCALE;
-    // we've yet to be hit
-    hit = false;
 }
 //################ BASIC UTILITIES ############################
 
 // called to check our life status
 bool Block::is_dead(){
-    return hit; // return whether we were hit or not
+    return type==NONE; // return whether we were hit or not
 }
 
 // called to check collisions
@@ -53,7 +50,7 @@ void Block::checkCollision(object& a)
         if ( ox >= xPos && oy >= yPos && ox <= xPos + w && oy <= yPos + h && a.getType() == BULLET )
         {
             a.kill();
-            hit = true;
+            type = NONE;
         }
 }
 // Draw ourselves

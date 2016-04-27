@@ -26,6 +26,8 @@ class Sprite
 		Sprite(std::string sprite_file = "player.png", int sp_x=0, int sp_y=0, int sp_w=32, int sp_h=32, int im_num = 7);
         // modifies the off rect
 		void animate();
+        // get the number of frames
+        int getFrames();
         // gets the current frame number
 		int getFrame();
         // increments the current frame number by inc

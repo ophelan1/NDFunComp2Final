@@ -38,7 +38,7 @@ class object{
         virtual bool is_dead() = 0;
         virtual void drawSprite(SDL_Surface* screen) = 0;
         virtual void onDeath(list<object*>* a){ }
-        virtual void kill(){type = 0;}
+        virtual void kill(){type = NONE;}
         virtual void checkCollision(object& a){ }
         int getType(){return type;}
 	protected:
@@ -52,7 +52,7 @@ class object{
 //############### CONSTRUCTOR / DESTRUCTOR ####################
 
 	object::object(){
-        type = 0;
+        type = NONE;
 /*
   	cout << "Please Enter a Value for the xPos: " << endl;
   	std::cin >> xPos;

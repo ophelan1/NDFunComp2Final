@@ -44,7 +44,12 @@ void Sprite::animate()
 		sprite_index += image_number;
 	off.x = off.w*sprite_index;
 }
-// get the current frame number
+// get the number of frames
+int Sprite::getFrames()
+{
+	return image_number;
+}
+//get the current frame number
 int Sprite::getFrame()
 {
 	return sprite_index;

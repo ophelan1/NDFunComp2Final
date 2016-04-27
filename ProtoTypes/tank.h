@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "object.h"
 #include "bullet.h"
+#include "bigboom.h"
 #include "oursdllib.h"
 #include <SDL/SDL.h>
 #include <SDL/SDL_keyboard.h>
@@ -112,64 +113,73 @@ class Tank : public object{
         if (state[ key_down ])
             if ((ODD_FRAME=(ODD_FRAME+1)%2) == 0)
                 turret.incFrame(-1);
-    
+        // fire our weapons, if it was a recent keytap
         if (taps->find(key_fire)!=taps->end())
             bulList->push_back(new Bullet(xPos/SCALE,yPos/SCALE,turret.getFrame(),SHOT_POWER));
     }
-
+    // no default onUpdate action
     void Tank::onUpdate() { }
 
+    // Check if we are dead
     bool Tank::is_dead()
     {
-        if (hp <= 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return (hp <= 0);
     }
-
  
+    // draw ourselves, our hp bar, and our bullet path
     void Tank::drawSprite(SDL_Surface* screen)
     {
-        fill_rect( (xMin+(xMax-xMin)/4)/SCALE,   16, (xMin+(xMax-xMin)*3/4)/SCALE,                 24, color::BLACK, screen );
+        //draw hp bar outline
+        fill_rect( (xMin+(xMax-xMin)/4)/SCALE,   16, (xMin+(xMax-xMin)*3/4)/SCALE,  24, color::BLACK, screen );
+        // calculate fill for hp bar
         double fill = ((double)(xMax-xMin)/2*(double)hp/(double)MAX_HP);
+        // draw filling of hp bar
         fill_rect( (xMin+(xMax-xMin)/4)/SCALE, 17, (xMin+(xMax-xMin)/4+fill)/SCALE, 23, color::GREEN, screen );
+        // Handle drawing the arc
+        // first set up some initial values
         const int sprite_height = sprite.getHeight()*SCALE;
         int angle = turret.getFrame();
         int x = xPos;
         int y = yPos;
         int xprev = x;
         int yprev = y;
+        // calculate dx,dy from power and angle
         int dx =  SHOT_POWER * SCALE * cos( angle * M_PI / 180.0 );
         int dy = -SHOT_POWER * SCALE * sin( angle * M_PI / 180.0 );
+        // go until we are out of the screen or on the ground
         while ( y<yPos+sprite_height && x>=0 && x<=screen->w*SCALE )
         {
+            // draw a line between the last two points
             draw_line( xprev/SCALE, yprev/SCALE, x/SCALE, y/SCALE, color::RED, screen );
             xprev = x;
             yprev = y;
+            // make a new point
             x += dx;
             y += dy;
             dy += Bullet::ACCEL_Y;
         }
+        // lastly, draw our tank and turret sprites
         sprite.draw( screen, xPos/SCALE-sprite.getWidth()/2, yPos/SCALE-sprite.getHeight()/2);
     	turret.draw( screen, xPos/SCALE-sprite.getWidth()/2, yPos/SCALE-sprite.getHeight()/2);
     }
-void Tank::onDeath(list<object*>* a)
-{
-    a->push_back( new Boom( xPos/SCALE, yPos/SCALE, "bigboom.png", 7, 128, 128 ) );
-    Scene::switchScenes( "menu" );
-}
-void Tank::checkCollision(object& a)
-{
-        const int sprite_width = sprite.getWidth()*SCALE;
-        const int sprite_height = sprite.getHeight()*SCALE;
-        const int ox = a.get_x() * SCALE;
-        const int oy = a.get_y() * SCALE;
-        if ( ox >= xPos -sprite_width/2 && oy >= yPos -sprite_height/2 && ox <= xPos + sprite_width/2 && oy <= yPos + sprite_height/2 && a.getType() == EXPLOSION )
-        {
-            hp -= DAMAGE_PER_BULLET;
-            a.kill();
-        }
-}
+
+    // our on-death action - add a bigboom
+    void Tank::onDeath(list<object*>* a)
+    {
+        a->push_back( new BigBoom( xPos/SCALE, yPos/SCALE, "bigboom.png", 21, 128, 128 ) );
+    }
+    // check for collisions against explosions
+    void Tank::checkCollision(object& a)
+    {
+            const int sprite_width = sprite.getWidth()*SCALE;
+            const int sprite_height = sprite.getHeight()*SCALE;
+            const int ox = a.get_x() * SCALE;
+            const int oy = a.get_y() * SCALE;
+            // if one hit us, take away some hp and make sure the explosion doesn't hit us again
+            if ( ox >= xPos -sprite_width/2 && oy >= yPos -sprite_height/2 && ox <= xPos + sprite_width/2 && oy <= yPos + sprite_height/2 && a.getType() == EXPLOSION )
+            {
+                hp -= DAMAGE_PER_BULLET;
+                a.kill();
+            }
+    }
 #endif
