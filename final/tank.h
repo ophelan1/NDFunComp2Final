@@ -49,6 +49,7 @@ class Tank : public object{
 		static const int ACCEL_X = 0.25*SCALE; // movement acceleration
 		static const int FRICTION_X = 0.1*SCALE; // movement friction
         static const int DAMAGE_PER_BULLET = 10; // how much hp to remove when hit
+        static const int SHOT_DELAY = 30; // minimum delay between shots
 	    Sprite sprite; // the tank base sprite
 		Sprite turret; // the tank turretsprite
         list<object*>*bulList; // the list of objects we add bullets to
@@ -83,6 +84,7 @@ class Tank : public object{
     
     void Tank::onUpdate(const unsigned char* state, set<int>* taps){
         static int ODD_FRAME = 0; // a variable used to limit the turret movement speed
+        static int SHOT_TIMER = 0; // a variable used to limit the number of shots per second
         // Handle movements
         if (state[ key_left ] && (dxVal > -dxMax) && (xPos > xMin))
             dxVal -= ACCEL_X;
@@ -113,9 +115,17 @@ class Tank : public object{
         if (state[ key_down ])
             if ((ODD_FRAME=(ODD_FRAME+1)%2) == 0)
                 turret.incFrame(-1);
-        // fire our weapons, if it was a recent keytap
-        if (taps->find(key_fire)!=taps->end())
+        // decrement shot timer
+        if (SHOT_TIMER > 0)
+        {
+            SHOT_TIMER -= 1;
+        }
+        // fire our weapons, if it was a recent keytap and we're allowed to shoot
+        if (taps->find(key_fire)!=taps->end() && SHOT_TIMER == 0)
+        {
             bulList->push_back(new Bullet(xPos/SCALE,yPos/SCALE,turret.getFrame(),SHOT_POWER));
+            SHOT_TIMER = SHOT_DELAY;
+        }
     }
     // no default onUpdate action
     void Tank::onUpdate() { }
