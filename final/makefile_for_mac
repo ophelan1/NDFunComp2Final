@@ -3,7 +3,7 @@ FLAGS=-lSDL -lSDL_image -lSDL_mixer -std=c++11 -Wall -static-libstdc++
 all: tanktest
 
 tanktest: tanktest.cpp tank.h object.h sprite.o oursdllib.o bullet.h boom.h block.h scene.h gamescene.h menuscene.h
-	g++ -o tanktest tanktest.cpp sprite.o oursdllib.o `sdl-config --libs` -I/usr/include/SDL_image -I/usr/include/SDL_mixer -L/usr/local/lib -lSDL_image -lSDL_mixer
+	g++ -o tanktest tanktest.cpp sprite.o oursdllib.o -std=c++11 `sdl-config --libs` -I/usr/include/SDL_image -I/usr/include/SDL_mixer -L/usr/local/lib -lSDL_image -lSDL_mixer
 	cp ./pics/* .
 
 %.o: %.cpp %.h
