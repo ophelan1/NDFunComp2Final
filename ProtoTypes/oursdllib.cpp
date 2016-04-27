@@ -1,9 +1,6 @@
 /* oursdllib.cpp
- * InitialAuthor:	John Westhoff
- * Date:	        02/29/2016
- * Course:	        CSE20212
  *
- * Implementation for JohnSDL utility functions.
+ * Implementation for OurSDLLib utility functions.
  * 
  */
 #include "oursdllib.h"

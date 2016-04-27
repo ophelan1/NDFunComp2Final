@@ -92,6 +92,8 @@ void GameScene::onUpdate(unsigned char keyStates[400], set<int> keyTaps)
             }
         }
     }
+    if (keyStates[ SDLK_r ])
+        Scene::switchScenes( "menu" );
 }
 void GameScene::onDraw(SDL_Surface *screen)
 {

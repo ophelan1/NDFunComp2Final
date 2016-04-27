@@ -1,3 +1,6 @@
+/*tank.h
+ * Defines the Tank class, which acts as the game character.
+ */
 #ifndef TANK_H
 #define TANK_H
 
@@ -17,51 +20,60 @@ using namespace std;
 
 class Tank : public object{
 	public:
+        // Constructor, takes keys for left and right, the bounds on position, the up and down turret keys, the fire key, and a list of objects to add bullets to
 	    Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<object*>*bullets);
+        // called when drawing sprites
 		void drawSprite(SDL_Surface* screen);
+        // called on every frame
 		void onUpdate(const unsigned char* state, set<int>* taps);
         void onUpdate();
+        // called to check if the tank is dead, our condition is if the hp <= 0
         bool is_dead();
+        // called when the tank dies, we add a bigboom object to the objectlist
         void onDeath(list<object*>* a);
+        // called to check collisions, we look for explosions
         void checkCollision(object &b);
 	private:
-		int dxMax;
-		int xMax;
-		int xMin;
-        int key_left;
-	    int key_right;
-		int key_up;
-		int key_down;
-        int key_fire;
-        int hp;
-        static const int MAX_HP = 100;
-		static const int SHOT_POWER = 16;
-		static const int ACCEL_X = 0.25*SCALE;
-		static const int FRICTION_X = 0.1*SCALE;
-        static const int DAMAGE_PER_BULLET = 10;
-	    Sprite sprite;
-		Sprite turret;
-        list<object*>*bulList;
+		int dxMax; // maximum horizontal velocity
+		int xMax; // maximum x position
+		int xMin; // minimum x position
+        int key_left; // key to move left
+	    int key_right; // key to move right
+		int key_up; // key to raise turret
+		int key_down; // key to lower turret
+        int key_fire; // key to fire
+        int hp; // player health
+        static const int MAX_HP = 100; // maximum player health
+		static const int SHOT_POWER = 16; // initial velocity of bullets
+		static const int ACCEL_X = 0.25*SCALE; // movement acceleration
+		static const int FRICTION_X = 0.1*SCALE; // movement friction
+        static const int DAMAGE_PER_BULLET = 10; // how much hp to remove when hit
+	    Sprite sprite; // the tank base sprite
+		Sprite turret; // the tank turretsprite
+        list<object*>*bulList; // the list of objects we add bullets to
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
-
+    // cpnstructor
     Tank::Tank(int left, int right, int minX, int maxX, int up, int down, int fire, list<object*>* bullets) : sprite(), turret("line360.png",0,0,32,32,360) {
-        type = 2;
-        xPos = ((maxX-minX)/2+minX)*SCALE;
-        yPos = 675*SCALE;
-        dxVal = 0;
+        type = TANK; // set our collision type to tank
+        xPos = ((maxX-minX)/2+minX)*SCALE; // center us in our half of the screen
+        yPos = 675*SCALE; // set us on the ground
+        dxVal = 0; // start at rest
         dyVal = 0;
-        hp = MAX_HP;
-        dxMax = 4*SCALE;
-        xMax = maxX*SCALE;
+        hp = MAX_HP; // start at full health
+        dxMax = 4*SCALE; // define our maximum speed
+        xMax = maxX*SCALE; // set our position limits
         xMin = minX*SCALE;
+        // set the keys we use for movement
         key_left = left;
         key_right = right;
         key_up = up;
         key_down = down;
         key_fire = fire;
+        // set our turret pointing upwards
         turret.setFrame(90);
+        // define our bullet list
         bulList = bullets;
     }
 
@@ -69,19 +81,21 @@ class Tank : public object{
 
     
     void Tank::onUpdate(const unsigned char* state, set<int>* taps){
-        static int ODD_FRAME = 0;
+        static int ODD_FRAME = 0; // a variable used to limit the turret movement speed
+        // Handle movements
         if (state[ key_left ] && (dxVal > -dxMax) && (xPos > xMin))
             dxVal -= ACCEL_X;
         else if (state[ key_right ] && (dxVal < dxMax) && (xPos < xMax))
             dxVal += ACCEL_X;
     	else if (dxVal != 0)
-		dxVal += dxVal > 0? -FRICTION_X:FRICTION_X;
+		    dxVal += dxVal > 0? -FRICTION_X:FRICTION_X;
 
     	if ((dxVal>0?dxVal:-dxVal) < FRICTION_X)
 	    	dxVal = 0;
 
 	    xPos += dxVal;	
 
+        // prevent going too far
         if (xPos < xMin){
             dxVal = 0;
             xPos = xMin;
@@ -90,7 +104,7 @@ class Tank : public object{
             dxVal = 0;
             xPos = xMax;
         }
-
+        // Handle turret motion
         if (state[ key_up ])
             if ((ODD_FRAME=(ODD_FRAME+1)%2) == 0)
                 turret.incFrame(1);
@@ -152,7 +166,7 @@ void Tank::checkCollision(object& a)
         const int sprite_height = sprite.getHeight()*SCALE;
         const int ox = a.get_x() * SCALE;
         const int oy = a.get_y() * SCALE;
-        if ( ox >= xPos -sprite_width/2 && oy >= yPos -sprite_height/2 && ox <= xPos + sprite_width/2 && oy <= yPos + sprite_height/2 && a.getType() == 3 )
+        if ( ox >= xPos -sprite_width/2 && oy >= yPos -sprite_height/2 && ox <= xPos + sprite_width/2 && oy <= yPos + sprite_height/2 && a.getType() == EXPLOSION )
         {
             hp -= DAMAGE_PER_BULLET;
             a.kill();

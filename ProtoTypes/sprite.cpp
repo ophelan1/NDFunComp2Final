@@ -1,7 +1,4 @@
 /* sprite.cpp
- * Author:	John Westhoff
- * Date:	03/20/2016
- * Course:	CSE20212
  *
  * Implementation file for the Sprite class.
  * 
@@ -47,24 +44,29 @@ void Sprite::animate()
 		sprite_index += image_number;
 	off.x = off.w*sprite_index;
 }
+// get the current frame number
 int Sprite::getFrame()
 {
 	return sprite_index;
 }
+// increment the current frame number
 void Sprite::incFrame(int inc)
 {
     sprite_index = (sprite_index + inc) % image_number;
 	animate();
 }
+// set the current frame number
 void Sprite::setFrame(int frame)
 {
     sprite_index = (frame) % image_number;
 	animate();
 }
+// get the sprite width
 int Sprite::getWidth()
 {
     return off.w;
 }
+// get the sprite height
 int Sprite::getHeight()
 {
     return off.h;

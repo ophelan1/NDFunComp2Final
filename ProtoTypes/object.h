@@ -12,7 +12,13 @@
 #include <SDL/SDL.h>
 
 using namespace std;
-
+enum typing{
+    NONE,
+    TANK,
+    BULLET,
+    EXPLOSION,
+    BLOCK
+};
 class object{
 	public:
 		static const int SCALE = 100;
@@ -40,7 +46,7 @@ class object{
 		int yPos;
 		int dxVal;
 		int dyVal;
-        int type;
+        typing type;
 };
 
 //############### CONSTRUCTOR / DESTRUCTOR ####################
